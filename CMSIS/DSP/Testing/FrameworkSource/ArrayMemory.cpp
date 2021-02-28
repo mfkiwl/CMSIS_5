@@ -26,8 +26,8 @@
  * limitations under the License.
  */
 #include "ArrayMemory.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <math.h>
 
 namespace Client {
@@ -40,7 +40,9 @@ namespace Client {
          this->m_bufferLength = bufferLength;
          this->m_generation=0;
          this->memError=false;
+         #if !defined(BENCHMARK)
          memset((void*)ptr, 0, bufferLength);
+         #endif
      }
 
      // By default there is alignment and  tail
@@ -54,12 +56,26 @@ namespace Client {
          this->m_bufferLength = bufferLength;
          this->m_generation=0;
          this->memError=false;
+         #if !defined(BENCHMARK)
          memset((void*)ptr, 0, bufferLength);
+         #endif
         }
      
      bool ArrayMemory::HasMemError()
      {
          return(this->memError);
+     }
+
+     size_t ArrayMemory::getTailSize()
+     {
+        if (this->tail)
+        {
+           return(16);  
+        }
+        else
+        {
+            return(0);
+        }
      }
 
      char *ArrayMemory::NewBuffer(size_t length)
@@ -71,11 +87,8 @@ namespace Client {
          
          size_t tailSize = 0;
          // Add a tail of 16 bytes corresponding to the max number of lanes.
-         if (this->tail)
-         {
-           tailSize = 16;  
-         }
-
+         tailSize = this->getTailSize();  
+         
          // Compute some offset to align the new buffer to be allocated
          if (this->alignSize > 0)
          {
@@ -103,6 +116,29 @@ namespace Client {
         }
      }
 
+     bool ArrayMemory::IsTailEmpty(char *ptr, size_t length)
+     {
+        if ((ptr == NULL) || (length == 0))
+        {
+           return(true);
+        }
+        else
+        {
+            char *p=ptr + length;
+            bool isEmpty=true;
+    
+            for(unsigned long i=0; i < this->getTailSize() ; i++)
+            {
+                //printf("%d\n",p[i]);
+                if (p[i] != 0)
+                {
+                    isEmpty = false;
+                }
+            }
+            return(isEmpty);
+        }
+     }
+
      
     /** Reset memory
 
@@ -117,7 +153,15 @@ namespace Client {
     */
     void ArrayMemory::FreeMemory()
     {
-        memset(this->m_ptr, 0, this->m_bufferLength);
+        #if !defined(BENCHMARK)
+           /*
+            In benchmark mode, memory is not clearer between
+            tests. It is faster when running on cycle model or RTL.
+            In benchmark mode, we don't tests so having a memory not
+            in a clean state is not a problem.
+           */
+           memset(this->m_ptr, 0, this->m_bufferLength);
+        #endif
         this->m_currentPtr=this->m_ptr;
         this->m_generation++;
         this->memError=false;

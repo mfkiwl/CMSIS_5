@@ -32,18 +32,29 @@
 
 #include <string>
 #include <cstddef>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstdio>
 #include "IORunner.h"
 #include "Error.h"
 #include "Timing.h"
-#include "arm_math.h"
+#include "arm_math_types.h"
 #include "Calibrate.h"
+
+#ifdef CORTEXA
+#define CALIBNB 1
+#else
+#define CALIBNB 20
+#endif
+
+using namespace std;
 
 namespace Client
 {
   
       IORunner::IORunner(IO *io,PatternMgr *mgr,  Testing::RunningMode runningMode):m_io(io), m_mgr(mgr)
       {
+        volatile Testing::cycles_t current;
+
         this->m_runningMode = runningMode;
         // Set running mode on PatternMgr.
         if (runningMode == Testing::kDumpOnly)
@@ -69,8 +80,8 @@ a C++ function pointer from the cycle measurements.
         Calibrate c((Testing::testID_t)0);
         Client::Suite *s=(Client::Suite *)&c;
         Client::test t = (Client::test)&Calibrate::empty;
-
-        cycleMeasurementStart();
+        calibration = 0;
+        
 /* 
 
 EXTBENCH is set when benchmarking is done through external traces
@@ -92,22 +103,75 @@ the average.
 
 This overhead is removed from benchmarks in the Runner..
 
+Calibration is removed from the python script when external trace is used for the cycles.
+Indeed, in that case the calibration value can only be measured by parsing the trace.
+
+Otherwise, the calibration is measured below.
+
 */
-        for(int i=0;i < 20;i++)
+
+/*
+
+We want to ensure that the calibration of the overhead of the
+measurement is the same here and when we do the measurement later.
+
+So to ensure the conditions are always the same, the instruction cache
+and branch predictor are flushed.
+
+*/
+#ifdef CORTEXA
+  __set_BPIALL(0);
+  __DSB();
+  __ISB();
+
+  __set_ICIALLU(0);
+  __DSB();
+  __ISB();
+#endif
+
+/*
+
+We always call the empty function once to ensure it is in the cache
+because it is how the measurement is done.
+
+*/
+        if (!m_mgr->HasMemError())
         {
+             (s->*t)();
+        }
+
+/*
+
+We measure the cycles required for a measurement,
+The cycleMeasurement starts, getCycles and cycleMeasurementStop
+should not be in the cache.
+
+So, for the overhead we always have the value corresponding to
+the code not in cache.
+
+While for the code itself we have the value for the code in cache.
+
+*/
+        for(int i=0;i < CALIBNB;i++)
+        {
+          cycleMeasurementStart();
           if (!m_mgr->HasMemError())
           {
              (s->*t)();
           }
+          #ifndef EXTBENCH
+             current = getCycles();
+          #endif
+          calibration += current;
+          cycleMeasurementStop();
         }
 #ifdef EXTBENCH
         stopSection();
 #endif
-#ifndef EXTBENCH
-        calibration=getCycles() / 20;
-#endif
-        cycleMeasurementStop();
 
+#ifndef EXTBENCH
+        calibration=calibration / CALIBNB;
+#endif
       }
 
       // Testing.
@@ -134,7 +198,8 @@ This overhead is removed from benchmarks in the Runner..
         int failedTests=0;
         Testing::errorID_t error=0;
         unsigned long line = 0;
-        Testing::cycles_t cycles=0;
+        char details[200];
+        volatile Testing::cycles_t cycles=0;
         Testing::nbParameters_t nbParams;
 
         // Read node identification (suite)
@@ -157,11 +222,12 @@ This overhead is removed from benchmarks in the Runner..
             error = UNKNOWN_ERROR;
             line = 0;
             cycles = 0;
+            details[0]='\0';
             Testing::param_t *paramData=NULL;
             Testing::nbParameterEntries_t entries=0;
             std::vector<Testing::param_t> params(nbParams);
             bool canExecute=true;
-            int  dataIndex=0;
+            unsigned long  dataIndex=0;
             Testing::ParameterKind paramKind;
 
             // Read test identification (test ID)
@@ -183,7 +249,7 @@ This overhead is removed from benchmarks in the Runner..
               if (m_io->hasParam() && paramData)
               {
                 // Load new params
-                for(int j=0; j < nbParams ; j++)
+                for(unsigned long j=0; j < nbParams ; j++)
                 {
                   params[j] = paramData[nbParams*dataIndex+j];
                 }
@@ -198,7 +264,26 @@ This overhead is removed from benchmarks in the Runner..
                 // and do specific initialization for the tests
                 s->setUp(m_io->CurrentTestID(),params,m_mgr);
                 
-                   // Run the test
+                // Run the test once to force the code to be in cache.
+                // By default it is disabled in the suite.
+#ifdef CORTEXA
+  __set_BPIALL(0);
+  __DSB();
+  __ISB();
+
+  __set_ICIALLU(0);
+  __DSB();
+  __ISB();
+#endif
+                if (s->isForcedInCache())
+                {
+                   if (!m_mgr->HasMemError())
+                   {
+                      (s->*t)();
+                   }
+                }
+
+                // Run the test
                 cycleMeasurementStart();
 #ifdef EXTBENCH
                 startSection();
@@ -211,7 +296,8 @@ This overhead is removed from benchmarks in the Runner..
                 stopSection();
 #endif
 #ifndef EXTBENCH
-                cycles=getCycles()-calibration;
+                cycles=getCycles();
+                cycles=cycles-calibration;
 #endif
                 cycleMeasurementStop();
               } 
@@ -225,6 +311,7 @@ This overhead is removed from benchmarks in the Runner..
                  {
                     error = ex.errorID;
                     line = ex.lineNumber;
+                    strcpy(details,ex.details);
                     result=Testing::kTestFailed;
                  }
               }
@@ -268,6 +355,7 @@ This overhead is removed from benchmarks in the Runner..
   
               // Dump test status to output
               m_io->DispStatus(result,error,line,cycles);
+              m_io->DispErrorDetails(details);
               m_io->DumpParams(params);
             }
             if (paramData)

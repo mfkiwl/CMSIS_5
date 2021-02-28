@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/basic_math_functions.h"
 #include <math.h>
 
 /**
@@ -59,6 +59,7 @@
   @param[in]     blockSize  number of samples in each vector
   @return        none
  */
+
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 

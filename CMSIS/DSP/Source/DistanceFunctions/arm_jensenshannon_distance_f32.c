@@ -25,23 +25,88 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
-__STATIC_INLINE float32_t rel_entr(float32_t x, float32_t y)
-{
-    return (x * log(x / y));
-}
-
-
 /**
-  @addtogroup FloatDist
+  @addtogroup JensenShannon
   @{
  */
 
+#if !defined(ARM_MATH_MVEF) || defined(ARM_MATH_AUTOVECTORIZE)
+/// @private
+__STATIC_INLINE float32_t rel_entr(float32_t x, float32_t y)
+{
+    return (x * logf(x / y));
+}
+#endif
 
+
+#if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
+
+#include "arm_helium_utils.h"
+#include "arm_vec_math.h"
+
+float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB, uint32_t blockSize)
+{
+    uint32_t        blkCnt;
+    float32_t       tmp;
+    f32x4_t         a, b, t, tmpV, accumV;
+
+    accumV = vdupq_n_f32(0.0f);
+
+    blkCnt = blockSize >> 2;
+    while (blkCnt > 0U) {
+        a = vld1q(pA);
+        b = vld1q(pB);
+
+        t = vaddq(a, b);
+        t = vmulq(t, 0.5f);
+
+        tmpV = vmulq(a, vrecip_medprec_f32(t));
+        tmpV = vlogq_f32(tmpV);
+        accumV = vfmaq(accumV, a, tmpV);
+
+        tmpV = vmulq_f32(b, vrecip_medprec_f32(t));
+        tmpV = vlogq_f32(tmpV);
+        accumV = vfmaq(accumV, b, tmpV);
+
+        pA += 4;
+        pB += 4;
+        blkCnt--;
+    }
+
+    /*
+     * tail
+     * (will be merged thru tail predication)
+     */
+    blkCnt = blockSize & 3;
+    if (blkCnt > 0U) {
+        mve_pred16_t    p0 = vctp32q(blkCnt);
+
+        a = vldrwq_z_f32(pA, p0);
+        b = vldrwq_z_f32(pB, p0);
+
+        t = vaddq(a, b);
+        t = vmulq(t, 0.5f);
+
+        tmpV = vmulq_f32(a, vrecip_medprec_f32(t));
+        tmpV = vlogq_f32(tmpV);
+        accumV = vfmaq_m_f32(accumV, a, tmpV, p0);
+
+        tmpV = vmulq_f32(b, vrecip_medprec_f32(t));
+        tmpV = vlogq_f32(tmpV);
+        accumV = vfmaq_m_f32(accumV, b, tmpV, p0);
+
+    }
+
+    arm_sqrt_f32(vecAddAcrossF32Mve(accumV) / 2.0f, &tmp);
+    return (tmp);
+}
+
+#else
 
 #if defined(ARM_MATH_NEON)
 
@@ -72,12 +137,12 @@ __STATIC_INLINE float32_t rel_entr(float32_t x, float32_t y)
 float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB, uint32_t blockSize)
 {
     float32_t accum, result, tmp,a,b;
-    uint32_t i, blkCnt;
+    uint32_t blkCnt;
     float32x4_t aV,bV,t, tmpV, accumV;
     float32x2_t accumV2;
 
-    accum = 0.0; 
-    accumV = vdupq_n_f32(0.0);
+    accum = 0.0f; 
+    accumV = vdupq_n_f32(0.0f);
 
     blkCnt = blockSize >> 2;
     while(blkCnt > 0)
@@ -85,7 +150,7 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
       aV = vld1q_f32(pA);
       bV = vld1q_f32(pB);
       t = vaddq_f32(aV,bV);
-      t = vmulq_n_f32(t, 0.5);
+      t = vmulq_n_f32(t, 0.5f);
 
       tmpV = vmulq_f32(aV, vinvq_f32(t));
       tmpV = vlogq_f32(tmpV);
@@ -104,14 +169,14 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
     }
 
     accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-    accum = accumV2[0] + accumV2[1];
+    accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
     {
       a = *pA;
       b = *pB;
-      tmp = (a + b) / 2.0;
+      tmp = (a + b) / 2.0f;
       accum += rel_entr(a, tmp);
       accum += rel_entr(b, tmp);
 
@@ -122,7 +187,7 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
     }
 
 
-    arm_sqrt_f32(accum/2.0, &result);
+    arm_sqrt_f32(accum/2.0f, &result);
     return(result);
 
 }
@@ -156,8 +221,8 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
     float32_t left, right,sum, result, tmp;
     uint32_t i;
 
-    left = 0.0; 
-    right = 0.0;
+    left = 0.0f; 
+    right = 0.0f;
     for(i=0; i < blockSize; i++)
     {
       tmp = (pA[i] + pB[i]) / 2.0f;
@@ -173,7 +238,8 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
 }
 
 #endif
+#endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 /**
- * @} end of FloatDist group
+ * @} end of JensenShannon group
  */

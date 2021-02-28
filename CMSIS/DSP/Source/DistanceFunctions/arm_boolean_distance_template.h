@@ -44,6 +44,12 @@
  */
 
 
+
+
+#define _FUNC(A,B) A##B 
+
+#define FUNC(EXT) _FUNC(arm_boolean_distance, EXT)
+
 /**
  * @brief        Elements of boolean distances
  *
@@ -52,17 +58,162 @@
  * @param[in]    pA              First vector of packed booleans
  * @param[in]    pB              Second vector of packed booleans
  * @param[in]    numberOfBools   Number of booleans
- * @param[out]   cTT             cTT value
- * @param[out]   cTF             cTF value
- * @param[out]   cFT             cFT value
  * @return None
  *
  */
 
-#define _FUNC(A,B) A##B 
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-#define FUNC(EXT) _FUNC(arm_boolean_distance, EXT)
+#include "arm_common_tables.h"
 
+void FUNC(EXT)(const uint32_t *pA
+       , const uint32_t *pB
+       , uint32_t numberOfBools
+#ifdef TT
+       , uint32_t *cTT
+#endif
+#ifdef FF
+       , uint32_t *cFF
+#endif
+#ifdef TF
+       , uint32_t *cTF
+#endif
+#ifdef FT
+       , uint32_t *cFT
+#endif
+       )
+{
+
+#ifdef TT
+    uint32_t _ctt=0;
+#endif
+#ifdef FF
+    uint32_t _cff=0;
+#endif
+#ifdef TF
+    uint32_t _ctf=0;
+#endif
+#ifdef FT
+    uint32_t _cft=0;
+#endif
+    uint32_t        a, b, ba, bb;
+    int shift;
+    const uint8_t  *pA8 = (const uint8_t *) pA;
+    const uint8_t  *pB8 = (const uint8_t *) pB;
+
+    /* handle vector blocks */
+    uint32_t         blkCnt = numberOfBools / 128;
+
+
+
+    while (blkCnt > 0U) {
+        uint8x16_t      vecA = vld1q((const uint8_t *) pA8);
+        uint8x16_t      vecB = vld1q((const uint8_t *) pB8);
+
+#ifdef TT
+        uint8x16_t      vecTT = vecA & vecB;
+        vecTT = vldrbq_gather_offset_u8(hwLUT, vecTT);
+        _ctt += vaddvq(vecTT);
+#endif
+#ifdef FF
+        uint8x16_t      vecFF = vmvnq(vecA) & vmvnq(vecB);
+        vecFF = vldrbq_gather_offset_u8(hwLUT, vecFF);
+        _cff += vaddvq(vecFF);
+#endif
+#ifdef TF
+        uint8x16_t      vecTF = vecA & vmvnq(vecB);
+        vecTF = vldrbq_gather_offset_u8(hwLUT, vecTF);
+        _ctf += vaddvq(vecTF);
+#endif
+#ifdef FT
+        uint8x16_t      vecFT = vmvnq(vecA) & vecB;
+        vecFT = vldrbq_gather_offset_u8(hwLUT, vecFT);
+        _cft += vaddvq(vecFT);
+#endif
+
+        pA8 += 16;
+        pB8 += 16;
+        blkCnt--;
+
+    }
+
+    pA = (const uint32_t *)pA8;
+    pB = (const uint32_t *)pB8;
+
+    blkCnt = numberOfBools & 0x7F;
+    while(blkCnt >= 32)
+    {
+       a = *pA++;
+       b = *pB++;
+       shift = 0;
+       while(shift < 32)
+       {
+          ba = a & 1;
+          bb = b & 1;
+          a = a >> 1;
+          b = b >> 1;
+
+#ifdef TT
+          _ctt += (ba && bb);
+#endif
+#ifdef FF
+          _cff += ((1 ^ ba) && (1 ^ bb));
+#endif
+#ifdef TF
+          _ctf += (ba && (1 ^ bb));
+#endif
+#ifdef FT
+          _cft += ((1 ^ ba) && bb);
+#endif
+          shift ++;
+       }
+
+       blkCnt -= 32;
+    }
+
+    a = *pA++;
+    b = *pB++;
+
+    a = a >> (32 - blkCnt);
+    b = b >> (32 - blkCnt);
+
+    while(blkCnt > 0)
+    {
+          ba = a & 1;
+          bb = b & 1;
+          a = a >> 1;
+
+          b = b >> 1;
+#ifdef TT
+          _ctt += (ba && bb);
+#endif
+#ifdef FF
+          _cff += ((1 ^ ba) && (1 ^ bb));
+#endif
+#ifdef TF
+          _ctf += (ba && (1 ^ bb));
+#endif
+#ifdef FT
+          _cft += ((1 ^ ba) && bb);
+#endif
+          blkCnt --;
+    }
+
+#ifdef TT
+    *cTT = _ctt;
+#endif
+#ifdef FF
+    *cFF = _cff;
+#endif
+#ifdef TF
+    *cTF = _ctf;
+#endif
+#ifdef FT
+    *cFT = _cft;
+#endif
+}
+
+#else
 #if defined(ARM_MATH_NEON)
 
 
@@ -199,16 +350,16 @@ void FUNC(EXT)(const uint32_t *pA
     }
 
 #ifdef TT
-    _ctt += tmp4tt[0] + tmp4tt[1];
+    _ctt += vgetq_lane_u64(tmp4tt, 0) + vgetq_lane_u64(tmp4tt, 1);
 #endif
 #ifdef FF
-    _cff += tmp4ff[0] + tmp4ff[1];
+    _cff +=vgetq_lane_u64(tmp4ff, 0) + vgetq_lane_u64(tmp4ff, 1);
 #endif
 #ifdef TF
-    _ctf += tmp4tf[0] + tmp4tf[1];
+    _ctf += vgetq_lane_u64(tmp4tf, 0) + vgetq_lane_u64(tmp4tf, 1);
 #endif
 #ifdef FT
-    _cft += tmp4ft[0] + tmp4ft[1];
+    _cft += vgetq_lane_u64(tmp4ft, 0) + vgetq_lane_u64(tmp4ft, 1);
 #endif
 
     nbBoolBlock = numberOfBools & 0x7F;
@@ -303,6 +454,7 @@ void FUNC(EXT)(const uint32_t *pA
 #endif
        )
 {
+  
 #ifdef TT
     uint32_t _ctt=0;
 #endif
@@ -381,7 +533,7 @@ void FUNC(EXT)(const uint32_t *pA
 #ifdef FF
     *cFF = _cff;
 #endif
-#ifdef TF
+#ifdef TF 
     *cTF = _ctf;
 #endif
 #ifdef FT
@@ -389,6 +541,7 @@ void FUNC(EXT)(const uint32_t *pA
 #endif
 }
 #endif
+#endif /* defined(ARM_MATH_MVEI) */
 
 
 /**

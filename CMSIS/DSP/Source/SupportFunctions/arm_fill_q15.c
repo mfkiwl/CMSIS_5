@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/support_functions.h"
 
 /**
   @ingroup groupSupport
@@ -44,7 +44,40 @@
   @param[in]     blockSize  number of samples in each vector
   @return        none
  */
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
+void arm_fill_q15(
+  q15_t value,
+  q15_t * pDst,
+  uint32_t blockSize)
+{
+  uint32_t blkCnt;  
+  blkCnt = blockSize >> 3;
+  while (blkCnt > 0U)
+  {
 
+        vstrhq_s16(pDst,vdupq_n_s16(value));
+        /*
+         * Decrement the blockSize loop counter
+         * Advance vector source and destination pointers
+         */
+        pDst += 8;
+        blkCnt --;
+    }
+
+  blkCnt = blockSize & 7;
+  while (blkCnt > 0U)
+  {
+    /* C = value */
+
+    /* Fill value in destination buffer */
+    *pDst++ = value;
+
+    /* Decrement loop counter */
+    blkCnt--;
+  }
+}
+
+#else
 void arm_fill_q15(
   q15_t value,
   q15_t * pDst,
@@ -94,6 +127,7 @@ void arm_fill_q15(
     blkCnt--;
   }
 }
+#endif /* defined(ARM_MATH_MVEI) */
 
 /**
   @} end of Fill group

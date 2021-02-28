@@ -25,16 +25,35 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
-  @addtogroup FloatDist
+  @addtogroup Minkowski
   @{
  */
 
+/* 6.14 bug */
+#if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6100100) && (__ARMCC_VERSION < 6150001)
+ 
+__attribute__((weak)) float __powisf2(float a, int b)
+{ 
+    const int recip = b < 0;
+    float r = 1;
+    while (1)
+    {
+        if (b & 1)
+            r *= a;
+        b /= 2;
+        if (b == 0)
+            break;
+        a *= a;
+    }
+    return recip ? 1/r : r;
+}
+#endif 
 
 /**
  * @brief        Minkowski distance between two vectors
@@ -46,19 +65,67 @@
  * @return distance
  *
  */
+
+#if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
+
+#include "arm_helium_utils.h"
+#include "arm_vec_math.h"
+
+float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, int32_t order, uint32_t blockSize)
+{
+    uint32_t        blkCnt;
+    f32x4_t         a, b, tmpV, accumV, sumV;
+
+    sumV = vdupq_n_f32(0.0f);
+    accumV = vdupq_n_f32(0.0f);
+
+    blkCnt = blockSize >> 2;
+    while (blkCnt > 0U) {
+        a = vld1q(pA);
+        b = vld1q(pB);
+
+        tmpV = vabdq(a, b);
+        tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
+        sumV = vaddq(sumV, tmpV);
+
+        pA += 4;
+        pB += 4;
+        blkCnt--;
+    }
+
+    /*
+     * tail
+     * (will be merged thru tail predication)
+     */
+    blkCnt = blockSize & 3;
+    if (blkCnt > 0U) {
+        mve_pred16_t    p0 = vctp32q(blkCnt);
+
+        a = vldrwq_z_f32(pA, p0);
+        b = vldrwq_z_f32(pB, p0);
+
+        tmpV = vabdq(a, b);
+        tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
+        sumV = vaddq_m(sumV, sumV, tmpV, p0);
+    }
+
+    return (powf(vecAddAcrossF32Mve(sumV), (1.0f / (float32_t) order)));
+}
+
+#else
 #if defined(ARM_MATH_NEON)
 
 #include "NEMath.h"
 
 float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, int32_t order, uint32_t blockSize)
 {
-    float32_t sum,diff;
-    uint32_t i, blkCnt;
+    float32_t sum;
+    uint32_t blkCnt;
     float32x4_t sumV,aV,bV, tmpV, n;
     float32x2_t sumV2;
 
-    sum = 0.0; 
-    sumV = vdupq_n_f32(0.0);
+    sum = 0.0f; 
+    sumV = vdupq_n_f32(0.0f);
     n = vdupq_n_f32(order);
 
     blkCnt = blockSize >> 2;
@@ -78,18 +145,18 @@ float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, in
     }
 
     sumV2 = vpadd_f32(vget_low_f32(sumV),vget_high_f32(sumV));
-    sum = sumV2[0] + sumV2[1];
+    sum = vget_lane_f32(sumV2, 0) + vget_lane_f32(sumV2, 1);
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
     {
-       sum += pow(fabs(*pA++ - *pB++),order);
+       sum += powf(fabsf(*pA++ - *pB++),order);
 
        blkCnt --;
     }
 
 
-    return(pow(sum,(1.0/order)));
+    return(powf(sum,(1.0f/order)));
 
 }
 
@@ -101,19 +168,20 @@ float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, in
     float32_t sum;
     uint32_t i;
 
-    sum = 0.0; 
+    sum = 0.0f; 
     for(i=0; i < blockSize; i++)
     {
-       sum += pow(fabs(pA[i] - pB[i]),order);
+       sum += powf(fabsf(pA[i] - pB[i]),order);
     }
 
 
-    return(pow(sum,(1.0f/order)));
+    return(powf(sum,(1.0f/order)));
 
 }
 #endif
+#endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 
 /**
- * @} end of FloatDist group
+ * @} end of Minkowski group
  */

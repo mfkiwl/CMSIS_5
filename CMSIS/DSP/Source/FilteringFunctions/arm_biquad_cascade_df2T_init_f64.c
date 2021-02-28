@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -65,7 +65,7 @@
 void arm_biquad_cascade_df2T_init_f64(
         arm_biquad_cascade_df2T_instance_f64 * S,
         uint8_t numStages,
-        float64_t * pCoeffs,
+        const float64_t * pCoeffs,
         float64_t * pState)
 {
   /* Assign filter stages */

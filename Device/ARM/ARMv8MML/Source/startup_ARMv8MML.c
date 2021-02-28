@@ -1,11 +1,11 @@
 /******************************************************************************
  * @file     startup_ARMv8MML.c
- * @brief    CMSIS Core Device Startup File for ARMv8MML Device
- * @version  V2.0.1
- * @date     23. July 2019
+ * @brief    CMSIS-Core Device Startup File for ARMv8MML Device
+ * @version  V2.1.0
+ * @date     16. December 2020
  ******************************************************************************/
 /*
- * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
+ * Copyright (c) 2009-2020 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -39,23 +39,21 @@
 #endif
 
 /*----------------------------------------------------------------------------
-  Exception / Interrupt Handler Function Prototype
- *----------------------------------------------------------------------------*/
-typedef void( *pFunc )( void );
-
-/*----------------------------------------------------------------------------
   External References
  *----------------------------------------------------------------------------*/
 extern uint32_t __INITIAL_SP;
 extern uint32_t __STACK_LIMIT;
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+extern uint32_t __STACK_SEAL;
+#endif
 
-extern void __PROGRAM_START(void) __NO_RETURN;
+extern __NO_RETURN void __PROGRAM_START(void);
 
 /*----------------------------------------------------------------------------
   Internal References
  *----------------------------------------------------------------------------*/
-void Default_Handler(void) __NO_RETURN;
-void Reset_Handler  (void) __NO_RETURN;
+__NO_RETURN void Reset_Handler  (void);
+            void Default_Handler(void);
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
@@ -93,9 +91,9 @@ void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler"
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
-extern const pFunc __VECTOR_TABLE[496];
-       const pFunc __VECTOR_TABLE[496] __VECTOR_TABLE_ATTRIBUTE = {
-  (pFunc)(&__INITIAL_SP),                   /*     Initial Stack Pointer */
+extern const VECTOR_TABLE_Type __VECTOR_TABLE[496];
+       const VECTOR_TABLE_Type __VECTOR_TABLE[496] __VECTOR_TABLE_ATTRIBUTE = {
+  (VECTOR_TABLE_Type)(&__INITIAL_SP),       /*     Initial Stack Pointer */
   Reset_Handler,                            /*     Reset Handler */
   NMI_Handler,                              /* -14 NMI Handler */
   HardFault_Handler,                        /* -13 Hard Fault Handler */
@@ -133,14 +131,26 @@ extern const pFunc __VECTOR_TABLE[496];
 /*----------------------------------------------------------------------------
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
-void Reset_Handler(void)
+__NO_RETURN void Reset_Handler(void)
 {
+  __set_PSP((uint32_t)(&__INITIAL_SP));
+
   __set_MSPLIM((uint32_t)(&__STACK_LIMIT));
+  __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
+
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+  __TZ_set_STACKSEAL_S((uint32_t *)(&__STACK_SEAL));
+#endif
 
   SystemInit();                             /* CMSIS System Initialization */
   __PROGRAM_START();                        /* Enter PreMain (C library entry point) */
 }
 
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wmissing-noreturn"
+#endif
 
 /*----------------------------------------------------------------------------
   Hard Fault Handler
@@ -157,3 +167,8 @@ void Default_Handler(void)
 {
   while(1);
 }
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop
+#endif
+

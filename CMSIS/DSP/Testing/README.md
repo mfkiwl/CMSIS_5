@@ -31,14 +31,14 @@ We need to be able to specify how those parameters are varied.
 
 #### R7 : It shall be possible to specify a subset of parameters (which could be empty) to compute regression.
 For instance, if our test is dependent on a vector size, we may want to compute a linear regression
-to know how the performances are dependent on the cycle size.
+to know how the performances are dependent on the vector size.
 
-But, our test may also depend on another parameter B which are not interesting us in the regression. In that case, the regression formula should not take into account B. And we would have several regression formula for each value of the parameter B.
+But, our test may also depend on another parameter B which is not interesting us in the regression. In that case, the regression formula should not take into account B. And we would have several regression formula for each value of the parameter B.
 
 The parameters of the tests would be Vector Size and B but the Summary parameter only Vector Size.
 
 #### R8 : The concept of a test suite shall be supported.
-A test suite is a set of tests using the same data.
+A test suite is a set of tests packaged with some data.
 
 ### Test execution
 
@@ -81,7 +81,7 @@ A test description file is defined with a specific syntax to support R1 to R8.
                class = BasicTests
                folder = BasicMaths
 
-The tests are organized in a hierarchy. For each node of thee hierarchy, a C++ class is specified.
+The tests are organized in a hierarchy. For each node of the hierarchy, a C++ class is specified.
 The script processTest.py is generating C++ codee for the group.
 For the test suite, the script is generating a partial implementation since a test suite is containing tests and you need to add the test themselves.
 
@@ -90,7 +90,7 @@ to be organized in exactly the same way. So, the folder property of a node is op
 
 A folder can be reused for different nodes. For instance, you may have a suite for testing and one for benchmarking and both may use the same pattern folder.
 
-A test suite is more complex since it contains the descriptino of the tests and related information.
+A test suite is more complex than a group since it contains the description of the tests and related information.
 
 #### Test suite
 
@@ -131,9 +131,9 @@ So, the test suite would be:
 
 A pattern or output description is an ID (to be used in the code) followed by a filename.
 
-The file is is the folder defined with the folder properties of the group / suites.
+The file is in the folder defined with the folder properties of the group / suites.
 
-The root folder for pattern and output is different.
+The root folder for pattern files and output files is different.
 
 #### Benchmarks
 
@@ -161,23 +161,23 @@ So, we have the possibility in the suite section to add a parameter section to d
             Pattern INPUT1_F32_ID : Input1_f32.txt 
 
 
-In above example we declare that thee functions of the suite are using 3 parameters named A,B and C.
+In above example we declare that the functions of the suite are using 3 parameters named A,B and C.
 We declare that a regression formula will use only A and B. So for each C value, we will get a different
 regression formula.
 
 We list the names to use when formatting the output of benchmarks.
-We define a regression formula using R syntax. (We do not write cycles ~ A*B but only A*B)
+We define a regression formula using R syntax. (We do not write "cycles ~ A*B" but only "A*B")
 
 Once parameters have been described, we need a way to feed parameter values to a test.
 
-There are 2 ways. First is a parameter file. Problem of a parameter file when it has to be included in the test (C array) is that it may be big. So, we also have a parameter generator. It is less felxible but enough for lot of cases.
+There are 2 ways. First way is a parameter file. Problem of a parameter file when it has to be included in the test (C array) is that it may be big. So, we also have a parameter generator. It is less flexible but enough for lot of cases.
 
 Those parameters values, when specified with a file, are described with:
 
             Output  OUT_SAMPLES_F32_ID : Output
             Params PARAM1_ID : Params1.txt
 
-They follow the outputs and use similar syntax.
+They follow the outputs section and use similar syntax.
 
 When the parameter is specified with a generator then the syntax is :
 
@@ -238,7 +238,7 @@ So, the number of possible run must be a multiple of 3 since we need to specify 
 
 Any node (Group, Suite or Function) can be disabled by using disabled { ...}.
 
-A disabled group/suite/test is not executed (and its code not generated fro group/suite).
+A disabled group/suite/test is not executed (and its code not generated for group/suite).
 Using disabled for tests is allowing to disable a test without changing the test ID of following tests.
 
 
@@ -254,10 +254,10 @@ According to R13 , the test may be controlled on the DUT or from an external hos
 It is implemented with a Runner class. The only implementation provided is IORunner,
 
 A Runner is just an implementation of the visitor pattern. A runner is applied to the tree of tests.
-In case of the IO runner, the IO mechanism and the memory manager must be provided.
+In case of the IO runner, an IO mechanism and a memory manager must be provided.
 
 The runner is running a test and for benchmark measuring the cycles.
-If cycles measurement is based on internal counter and not external trace.
+Cycles measurement can be based on internal counter or external trace.
 Generally, there is a calibration at beginning of the Runner to estimate the overhead of
 cycle measurements. This overhead is then removed when doing the measurement.
 
@@ -279,7 +279,9 @@ According to R10 and R11, one must be able to disable tests done on the DUT and 
 When instantiating a runner, you can specify the running mode with an enum. For instance Testing::kTestAndDump.
 There are 3 modes, Test only, Dump only, Test and dump. 
 
+In dump only mode, tests using pattern will fail but the tests will be considered as passed (because we are only interested in the output).
 
+But it means that no test using patterns shoudl be used in the middle of the test or some part of it may not be executed. Those tests must be kept at the end.
 
 #### processResult
 For R14, we have a python script which will process the result of tests and format it into several possible formats like text, CSV, Mathematica dataset. 
@@ -290,50 +292,83 @@ For R14, we have a python script which will process the result of tests and form
 ### Needed packages
 
     pip install pyparsing 
-
+    pip install Colorama
+    
 If you want to compute summary statistics with regression:
 
     pip install statsmodels
     pip install numpy
     pip install panda
 
+If you want to run the script which is launching all the tests on all possible configurations then
+you'll need yaml:
+
+    pip install pyyaml
+
 ### Generate the test patterns in Patterns folder
+
+We have archived lot of test patterns on github. So this step is needed only if you write new test patterns.
 
     cd Testing
     python PatternGeneration\BasicMaths.py
 
 
+### Generate the cpp,h and txt files from the desc.txt file
+
+First time the project is cloned from github, you'll need to create some missing folders as done
+in the script createDefaultFolder.sh
+
+Those folders are used to contain the files generated by the scripts.
+
+Once those folders have been created. You can use following commands to create the generated C files.
+
+    cd ..
+
+    python preprocess.py -f desc.txt 
+
+This will create a file Output.pickle which is containing a Python object representing
+the parsed data structure. It is done because parsing a big test description file is quite slow.
+
+So, it is needed to be done only once or if you modify the test description file.
+
+Then, the tests can be processed to configure the test environment with
+
+    python processTests.py -f Output.pickle
+
+or just
+
+    python processTests.py
+
+You can also use the -e option (for embedded). It will include all the patterns (for the selected tests) into a C array. It is the preferred method if you want to run on a board. In below examples, we will
+always use -e option.
+
+    python processTests.py -e
+
+You can pass a C++ class to specifiy that you want to generate tests only for a specific group or suite.
+
+    python processTests.py -e BasicTests
+
+You can add a test ID to specify that you wan to run only a specific test in the suite:
+
+    python processTests.py -e BasicTests 4
+
+Before filtering desc.txt by using a C++ class, you should (at least once) parse the full file without filtering.
+
+The reason is that the cmake build is not aware of the filtering and will include some source files which
+are not needed when filtered out. So those files should at least be present to allow the compilation to proceed. They need to be generated at least once.
+
+
 ### Generate the build system
 
     mkdir build
+    cd build
     cmake -DCMAKE_PREFIX_PATH="path/to/tools" -DCMAKE_TOOLCHAIN_FILE=../../armcc.cmake -DARM_CPU="cortex-a5" -DPLATFORM="FVP" -DBENCHMARK=OFF -G "Unix Makefiles" ..
 
 If BENCHMARK=ON is used, other options should be enabled to have better performances.
 
-### Generate the cpp,h and txt files from the desc.txt file
-
-    cd ..
-    python processTests.py -f desc.txt
-
-You can pass a C++ class to specifiy that you want to generate tests only for a specific group or suite.
-
-    python processTests.py -f desc.txt BasicTests
-
-You can add a test ID to specify that you wan to run only a specific test in the suite:
-
-    python processTests.py -f desc.txt BasicTests 4
-
-First time this script is run, it is expecting some folder and some headers.
-To create the folder, the script createDefaultFolder.sh can be used.
-
-Then, before filtering desc.txt by using a C++ class, you should (at least once) parse the full file without filtering.
-
-The reason is that the cmake build is not aware of the filtering and will include some source files which
-are not needed when filtered out. So those files should at least be present to allow the compilation to proceed. So they need to be generated at least once.
-
 ### Build and run the tests
 
-Folder Output/BasicMaths should exist
+Folder Output/BasicMaths should exist. For example, on Windows with ArmDS:
 
     cd build
     make VERBOSE=1
@@ -342,18 +377,29 @@ Folder Output/BasicMaths should exist
 ### Parse the results
 
     cd ..
-    python processResult.py -f desc.txt -r build\result.txt
+    python processResult.py -e -r build\result.txt
 
 -e option is needed if the mode -e was used with processTests because the output has a different
 format with or without -e option.
 
+
+Some cycles are displayed with the test status (passed or failed). **Don't trust** those cycles for a benchmark.
+
+At this point they are only an indication. The timing code will have to be tested and validated.
+
 ### Generate summary statistics
 
-The result parsing may have generated some statistics in FullBenchmark folder.
+The parsing of the results may have generated some statistics in FullBenchmark folder.
 
 The script summaryBench can parse those results and compute regression formula.
 
-    python summaryBench.py -f desc.txt -r build\result.txt
+    python summaryBench.py -r build\result.txt
+
+The file result.txt must be placed inside the build folder for this script to work.
+Indeed, this script is using the path to result.txt to also find the file currentConfig.csv which has
+been created by the cmake command.
+
+The Output.pickle file is used by default. It can be changed with -f option.
 
 The output of this script may look like:
 
@@ -368,34 +414,35 @@ The MAX column is the max of cycles computed for all values of A and B which wer
 To convert some benchmark to an older format.
 The PARAMS must be compatible between all suites which are children of AGroup
 
-    python convertToOld.py -f desc.txt -e AGroup
+    python convertToOld.py -e AGroup
 
+Output.pickle is used by default. It can be changed with -f option.
 
 To add a to sqlite3 databse:
 
-    python addToDB.py -f desc.txt -e AGroup
+    python addToDB.py -e AGroup
 
+Output.pickle is used by default. It can be changed with -f option.
 
 The database must be created with createDb.sql before this script can be used.
 
-### FPGA mode
-In FPGA mode, it is slightly different.
-The script processTests and processResult must be used with additional option -e
+### Semihosting or FPGA mode
+The script processTests and processResult must be used with additional option -e for the FPGA (embedded mode)
 
-testmain.cpp must be modified
+testmain.cpp, in semihosting mode, must contain:
 
-This line
 ```cpp
 Client::Semihosting io("../TestDesc.txt","../Patterns","../Output");
 ```
 
-must be replaced with
+In FPGA (embedded mode), this lne must be replaced with:
 
 ```cpp
 Client::FPGA io(testDesc,patterns);
 ```
 
-testDesc and patterns are char* generated by the script processTests
+testDesc and patterns are char* generated by the script processTests and containing the description
+of the tests to run and the test pattern samples to be used.
 
 ### Dumping outputs 
 
@@ -408,7 +455,7 @@ Client::IORunner runner(&io,&mgr,Testing::kTestOnly);
 Must be replaced by
 
 ```cpp
-Client::IORunner runner(&io,&mgr,Testing::DumoOnly);
+Client::IORunner runner(&io,&mgr,Testing::DumpOnly);
 ```
 
 or
@@ -417,7 +464,14 @@ or
 Client::IORunner runner(&io,&mgr,Testing::kTestAndDump);
 ```
 
-and of course, the test must have a line to dump the outputs.
+and of course, the test must contain a line to dump the outputs.
+
+In DumpOnly mode, reference patterns are not loaded and the test assertions are "failing" but reporting passed.
+
+So, if a test is in the middle of useful code, some part of the code will not execute.
+
+As consequence, if you intend to use the DumpOnly mode, you must ensure that all test assertions are at the
+end of your test.
 
 ## testmain.cpp
 
@@ -430,11 +484,13 @@ To start the tests you need to:
 * Instantiate the root object which is containing all tests
 * Apply the runner to the root object
 
+This is done in testmain.cpp.
+
 ## HOW TO ADD NEW TESTS
 
 For a test suite MyClass, the scripts are generating an include file MyClass_decl.h 
 
-You should create another include MyClass.h and another cpp file MyClass.cpp 
+You should create another include Include/MyClass.h and another cpp file Source/MyClass.cpp in TEsting folder.
 
 MyClass.h should contain:
 
@@ -537,7 +593,9 @@ It is also here that you specify what you want to dump if you're in dump mode.
 
 To add a to sqlite3 databse:
 
-    python addToDB.py -f desc.txt AGroup
+    python addToDB.py AGroup
+
+Output.pickle is used by default. It can be changed with -f option.
 
 AGroup should be the class name of a Group in the desc.txt
 
@@ -550,13 +608,15 @@ Each suite is defining the same parameters : NB.
 
 If you use:
 
-    python addToDB.py -f desc.txt BasicBenchmarks
+    python addToDB.py BasicBenchmarks
+
+Output.pickle is used by default. It can be changed with -f option.
 
 A table BasicBenchmarks will be create and the benchmarks result for F32, Q31, Q15 and Q7 will be added to this table.
 
 But, if you do:
 
-    python addToDB.py -f desc.txt BasicMathsBenchmarksF32
+    python addToDB.py BasicMathsBenchmarksF32
 
 The a table BasicMathsBenchmarksF32 will be created which is probably not what you want since the table is containing a type column (f32,q31, q15, q7)
 
@@ -587,3 +647,26 @@ examples.sql : how to do simple queries and join with the configuration columns 
 diff.sql : How to compute a performance ratio (max cycle and regression) based on a reference core (which could be extended to a reference configuration if needed).
 
 ## HOW TO EXTEND IT
+
+## FLOAT16 support
+
+On Arm AC5 compiler \_\_fp16 type (float16_t in CMSIS-DSP) can't be used as argument or return value of a function.
+
+Pointer to \_fp16 arrays are allowed.
+
+In CMSIS-DSP, we want to keep the possibility of having float16_t as an argument.
+
+As consequences, 
+
+* the functions using float16_t in the API won't be supported by AC5 compiler.
+* The correspondingfloat16_t tests are put in a different test file desc_f16.txt
+* Code for those float16_t test is not built when ac5.cmake toolchain is used
+* BasicMath cmake has been modified to show hot to avoid including float16 code
+when building with ac5.cmake toolchain
+
+In current example, we assume all float16_t code and tests are not supported by AC5 just to
+show how the cmake must be modified.
+
+When more float16_t code is added to the CMSIS-DSP, this will be refined with a better
+separation.
+

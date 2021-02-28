@@ -1,11 +1,9 @@
 #include "DistanceTestsU32.h"
+#include <stdio.h>
 #include "Error.h"
-#include "arm_math.h"
 #include "Test.h"
 
-#include <cstdio>
-
-#define ERROR_THRESHOLD 1e-5
+#define ERROR_THRESHOLD 1e-8
 
     void DistanceTestsU32::test_dice_distance()
     {
@@ -23,7 +21,7 @@
           outp ++;
        }
 
-        ASSERT_NEAR_EQ(output,ref,(float32_t)ERROR_THRESHOLD);
+        ASSERT_REL_ERROR(output,ref,(float32_t)ERROR_THRESHOLD);
     } 
 
     void DistanceTestsU32::test_hamming_distance()
@@ -184,6 +182,7 @@
     void DistanceTestsU32::setUp(Testing::testID_t id,std::vector<Testing::param_t>& paramsArgs,Client::PatternMgr *mgr)
     {
 
+        (void)paramsArgs;
         inputA.reload(DistanceTestsU32::INPUTA_U32_ID,mgr);
         inputB.reload(DistanceTestsU32::INPUTB_U32_ID,mgr);
         dims.reload(DistanceTestsU32::DIMS_S16_ID,mgr);
@@ -259,5 +258,6 @@
 
     void DistanceTestsU32::tearDown(Testing::testID_t id,Client::PatternMgr *mgr)
     {
+       (void)id;
        output.dump(mgr);
     }

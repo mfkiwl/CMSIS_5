@@ -1,9 +1,8 @@
 #include "BayesF32.h"
+#include <stdio.h>
 #include "Error.h"
-#include "arm_math.h"
 #include "Test.h"
 
-#include <cstdio>
 
 
     void BayesF32::test_gaussian_naive_bayes_predict_f32()
@@ -25,7 +24,7 @@
           p++;
        }
 
-        ASSERT_NEAR_EQ(outputProbas,probas,(float32_t)1e-3);
+        ASSERT_REL_ERROR(outputProbas,probas,(float32_t)5e-6);
         ASSERT_EQ(outputPredicts,predicts);
     } 
 
@@ -34,7 +33,7 @@
     {
 
 
-       
+       (void)paramsArgs;
 
        switch(id)
        {
@@ -82,6 +81,7 @@
 
     void BayesF32::tearDown(Testing::testID_t id,Client::PatternMgr *mgr)
     {
+        (void)id;
         outputProbas.dump(mgr);
         outputPredicts.dump(mgr);
     }

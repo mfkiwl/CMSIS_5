@@ -24,13 +24,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
- * @addtogroup groupStats
+ * @addtogroup Entropy
  * @{
  */
 
@@ -44,7 +44,55 @@
  *
  */
 
-#if defined(ARM_MATH_NEON)
+#if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
+
+#include "arm_helium_utils.h"
+#include "arm_vec_math.h"
+
+float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
+{
+    uint32_t        blkCnt;
+    float32_t       accum=0.0f,p;
+
+
+    blkCnt = blockSize;
+
+    f32x4_t         vSum = vdupq_n_f32(0.0f);
+    /* Compute 4 outputs at a time */
+    blkCnt = blockSize >> 2U;
+
+    while (blkCnt > 0U)
+    {
+        f32x4_t         vecIn = vld1q(pSrcA);
+
+        vSum = vaddq_f32(vSum, vmulq(vecIn, vlogq_f32(vecIn)));
+
+        /*
+         * Decrement the blockSize loop counter
+         * Advance vector source and destination pointers
+         */
+        pSrcA += 4;
+        blkCnt --;
+    }
+
+    accum = vecAddAcrossF32Mve(vSum);
+
+    /* Tail */
+    blkCnt = blockSize & 0x3;
+    while(blkCnt > 0)
+    {
+       p = *pSrcA++;
+       accum += p * logf(p);
+       
+       blkCnt--;
+    
+    }
+
+    return (-accum);
+}
+
+#else
+#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "NEMath.h"
 
@@ -60,8 +108,8 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
  
     pIn = pSrcA;
 
-    accum = 0.0;
-    accumV = vdupq_n_f32(0.0);
+    accum = 0.0f;
+    accumV = vdupq_n_f32(0.0f);
 
     blkCnt = blockSize >> 2;
     while(blkCnt > 0)
@@ -77,13 +125,14 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     }
 
     accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-    accum = accumV2[0] + accumV2[1];
+    accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
+    
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
     {
        p = *pIn++;
-       accum += p * log(p);
+       accum += p * logf(p);
        
        blkCnt--;
     
@@ -102,12 +151,12 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     pIn = pSrcA;
     blkCnt = blockSize;
 
-    accum = 0.0;
+    accum = 0.0f;
 
     while(blkCnt > 0)
     {
        p = *pIn++;
-       accum += p * log(p);
+       accum += p * logf(p);
        
        blkCnt--;
     
@@ -116,6 +165,8 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     return(-accum);
 }
 #endif
+#endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
+
 /**
- * @} end of groupStats group
+ * @} end of Entropy group
  */

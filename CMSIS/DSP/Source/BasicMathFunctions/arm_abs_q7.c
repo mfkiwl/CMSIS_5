@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/basic_math_functions.h"
 
 /**
   @ingroup groupMath
@@ -51,7 +51,7 @@
                    The Q7 value -1 (0x80) will be saturated to the maximum allowable positive value 0x7F.
  */
 
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "arm_helium_utils.h"
 
@@ -116,28 +116,28 @@ void arm_abs_q7(
     /* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
     in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB(0, in);
+    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
     *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
     in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB(0, in);
+    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
     *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
     in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB(0, in);
+    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
     *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
     in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB(0, in);
+    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
     *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
@@ -163,7 +163,7 @@ void arm_abs_q7(
     /* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
     in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t) __QSUB(0, in);
+    *pDst++ = (in > 0) ? in : (q7_t) __QSUB8(0, in);
 #else
     *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif

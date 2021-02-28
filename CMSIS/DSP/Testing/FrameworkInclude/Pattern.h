@@ -30,12 +30,18 @@
 
 #include "Test.h"
 #include "Pattern.h"
+#include "arm_math_types.h"
+#include "arm_math_types_f16.h"
 
 namespace Client {
 
 template <typename T> 
 T *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSamples_t &nb, Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES)
 {
+    (void)id;
+    (void)mgr; 
+    (void)nb;
+    (void)maxSamples;
     return(NULL);
 };
 
@@ -44,6 +50,11 @@ float64_t *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSampl
 
 template <>
 float32_t *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSamples_t &nb, Testing::nbSamples_t maxSamples);
+
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+template <>
+float16_t *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSamples_t &nb, Testing::nbSamples_t maxSamples);
+#endif
 
 template <>
 q63_t *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSamples_t &nb, Testing::nbSamples_t maxSamples);
@@ -69,6 +80,8 @@ uint8_t *loadPattern(Testing::PatternID_t id, PatternMgr *mgr,Testing::nbSamples
 template <typename T> 
 T *localPattern(Testing::nbSamples_t id, PatternMgr *mgr)
 {
+    (void)id; 
+    (void)mgr;
     return(NULL);
 };
 
@@ -77,6 +90,11 @@ float64_t *localPattern(Testing::nbSamples_t nb, PatternMgr *mgr);
 
 template <>
 float32_t *localPattern(Testing::nbSamples_t nb, PatternMgr *mgr);
+
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+template <>
+float16_t *localPattern(Testing::nbSamples_t nb, PatternMgr *mgr);
+#endif
 
 template <>
 q63_t *localPattern(Testing::nbSamples_t nb, PatternMgr *mgr);
@@ -101,6 +119,9 @@ uint8_t *localPattern(Testing::nbSamples_t nb, PatternMgr *mgr);
 
 extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t nb,float64_t* data,PatternMgr *mgr);
 extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t,float32_t*,PatternMgr *);
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t,float16_t*,PatternMgr *);
+#endif
 extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t,q63_t*,PatternMgr *);
 extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t,q31_t*,PatternMgr *);
 extern void dumpPattern(Testing::outputID_t id,Testing::nbSamples_t,q15_t*,PatternMgr *);
@@ -135,6 +156,18 @@ class AnyPattern {
             this->m_nbSamples = 0;
        }
 
+       bool isTailEmpty()
+       {
+          if (m_mgr)
+          {
+             return(m_mgr->IsTailEmpty((char*)this->ptr(),this->nbSamples()*sizeof(T)));
+          }
+          else
+          {
+            return(true);
+          }
+       }
+
        /** Get pointer to the pattern data.
 
            Pointer is NULL in following conditions:
@@ -145,6 +178,10 @@ class AnyPattern {
        */
        T *ptr()
        {
+           if (this->m_mgr == NULL)
+           {
+              return(NULL);
+           }
           
            if (this->currentGen != this->m_mgr->generation())
            {
@@ -172,7 +209,23 @@ class AnyPattern {
 
        Testing::nbSamples_t nbSamples()
        {
-          return(this->m_nbSamples);
+          if (this->m_mgr == NULL)
+          {
+            return(0);
+          }
+
+          if (this->currentGen != this->m_mgr->generation())
+          {
+              return(0);
+          }
+          if (this->isLoaded)
+          {
+             return(this->m_nbSamples);
+          }
+          else
+          {
+            return(0);
+          }
        }
 
 };
@@ -280,9 +333,21 @@ class LocalPattern : public AnyPattern<T>{
 
        void dump(PatternMgr *mgr)
        {
-           if (this->m_mgr->runningMode() != Testing::kTestOnly)
+           (void)mgr;
+           /*
+
+           If the pattern has never been created then m_mgr is NULL.
+
+           */
+           if (this->m_mgr != NULL)
            {
-              dumpPattern(this->m_id,this->m_nbSamples,this->data,this->m_mgr);
+              if (this->m_mgr->runningMode() != Testing::kTestOnly)
+              {
+                 if ((this->ptr() != NULL) && (this->nbSamples() > 0))
+                 {
+                    dumpPattern(this->m_id,this->m_nbSamples,this->data,this->m_mgr);
+                 }
+              }
            }
        }
 };

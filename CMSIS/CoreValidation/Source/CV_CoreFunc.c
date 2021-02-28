@@ -2,7 +2,7 @@
  *      Name:         CV_CoreFunc.c
  *      Purpose:      CMSIS CORE validation tests implementation
  *-----------------------------------------------------------------------------
- *      Copyright (c) 2017 - 2019 Arm Limited. All rights reserved.
+ *      Copyright (c) 2017 - 2021 Arm Limited. All rights reserved.
  *----------------------------------------------------------------------------*/
 
 #include "CV_Framework.h"
@@ -194,13 +194,11 @@ Check expected behavior of interrupt vector relocation functions:
 void TC_CoreFunc_IRQVect(void) {
 #if defined(__VTOR_PRESENT) && __VTOR_PRESENT
   /* relocate vector table */
-  extern uint32_t __VECTOR_TABLE[];
-  static uint32_t vectors[32] __ALIGNED(512);
+  extern const VECTOR_TABLE_Type __VECTOR_TABLE[48];
+  static VECTOR_TABLE_Type vectors[sizeof(__VECTOR_TABLE)/sizeof(__VECTOR_TABLE[0])] __ALIGNED(512);
 
-  for(uint32_t i=0U; i<32U; i++) {
-    vectors[i] = __VECTOR_TABLE[i];
-  }
-
+  memcpy(vectors, __VECTOR_TABLE, sizeof(__VECTOR_TABLE));
+  
   const uint32_t orig_vtor = SCB->VTOR;
   const uint32_t vtor = ((uint32_t)vectors) & SCB_VTOR_TBLOFF_Msk;
   SCB->VTOR = vtor;
@@ -437,8 +435,9 @@ void TC_CoreFunc_MSP (void) {
 - Check if __get_PSPLIM and __set_PSPLIM intrinsic can be used to manipulate process stack pointer limit.
 */
 void TC_CoreFunc_PSPLIM (void) {
-#if ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
-     (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
+#if ((defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) || \
+     (defined (__ARM_ARCH_8M_BASE__   ) && (__ARM_ARCH_8M_BASE__   == 1))    )
   // don't use stack for this variables
   static uint32_t orig;
   static uint32_t psplim;
@@ -453,8 +452,9 @@ void TC_CoreFunc_PSPLIM (void) {
 
   __set_PSPLIM(orig);
 
-#if (!(defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) && \
-     (!defined (__ARM_FEATURE_CMSE  ) || (__ARM_FEATURE_CMSE   < 3)))
+#if (!(defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) && \
+     !(defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) && \
+     (!defined (__ARM_FEATURE_CMSE     ) || (__ARM_FEATURE_CMSE      < 3))    )
   // without main extensions, the non-secure PSPLIM is RAZ/WI
   ASSERT_TRUE(result == 0U);
 #else
@@ -471,8 +471,9 @@ void TC_CoreFunc_PSPLIM (void) {
 - Check if __TZ_get_PSPLIM_NS and __TZ_set_PSPLIM_NS intrinsic can be used to manipulate process stack pointer limit.
 */
 void TC_CoreFunc_PSPLIM_NS (void) {
-#if ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
-     (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
+#if ((defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) || \
+     (defined (__ARM_ARCH_8M_BASE__   ) && (__ARM_ARCH_8M_BASE__   == 1))    )
 
 #if (defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3))
   uint32_t orig;
@@ -488,7 +489,8 @@ void TC_CoreFunc_PSPLIM_NS (void) {
 
   __TZ_set_PSPLIM_NS(orig);
 
-#if (!(defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)))
+#if (!(defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) && \
+     !(defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1))    )
   // without main extensions, the non-secure PSPLIM is RAZ/WI
   ASSERT_TRUE(result == 0U);
 #else
@@ -506,8 +508,9 @@ void TC_CoreFunc_PSPLIM_NS (void) {
 - Check if __get_MSPLIM and __set_MSPLIM intrinsic can be used to manipulate main stack pointer limit.
 */
 void TC_CoreFunc_MSPLIM (void) {
-#if ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
-     (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
+#if ((defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) || \
+     (defined (__ARM_ARCH_8M_BASE__   ) && (__ARM_ARCH_8M_BASE__   == 1))    )
   // don't use stack for this variables
   static uint32_t orig;
   static uint32_t msplim;
@@ -528,8 +531,9 @@ void TC_CoreFunc_MSPLIM (void) {
 
   __set_CONTROL(ctrl);
 
-#if (!(defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) && \
-     (!defined (__ARM_FEATURE_CMSE  ) || (__ARM_FEATURE_CMSE   < 3)))
+#if (!(defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) && \
+     !(defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) && \
+     (!defined (__ARM_FEATURE_CMSE     ) || (__ARM_FEATURE_CMSE      < 3))    )
   // without main extensions, the non-secure MSPLIM is RAZ/WI
   ASSERT_TRUE(result == 0U);
 #else
@@ -546,7 +550,8 @@ void TC_CoreFunc_MSPLIM (void) {
 - Check if __TZ_get_MSPLIM_NS and __TZ_set_MSPLIM_NS intrinsic can be used to manipulate process stack pointer limit.
 */
 void TC_CoreFunc_MSPLIM_NS (void) {
-#if ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
+#if ((defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
      (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
 
 #if (defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3))
@@ -563,7 +568,8 @@ void TC_CoreFunc_MSPLIM_NS (void) {
 
   __TZ_set_MSPLIM_NS(orig);
 
-#if (!(defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)))
+#if (!(defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1)) && \
+     !(defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1))    )
   // without main extensions, the non-secure MSPLIM is RAZ/WI
   ASSERT_TRUE(result == 0U);
 #else
@@ -615,9 +621,10 @@ void TC_CoreFunc_PRIMASK (void) {
 - Check if __enable_fault_irq and __disable_fault_irq are reflected in FAULTMASK.
 */
 void TC_CoreFunc_FAULTMASK (void) {
-#if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
-     (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
-     (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+#if ((defined (__ARM_ARCH_7M__        ) && (__ARM_ARCH_7M__        == 1)) || \
+     (defined (__ARM_ARCH_7EM__       ) && (__ARM_ARCH_7EM__       == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) || \
+     (defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1))    )
 
   uint32_t orig = __get_FAULTMASK();
 
@@ -654,9 +661,10 @@ void TC_CoreFunc_FAULTMASK (void) {
 - Check if __set_BASEPRI_MAX intrinsic can be used to manipulate BASEPRI.
 */
 void TC_CoreFunc_BASEPRI(void) {
-#if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
-     (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
-     (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+#if ((defined (__ARM_ARCH_7M__        ) && (__ARM_ARCH_7M__        == 1)) || \
+     (defined (__ARM_ARCH_7EM__       ) && (__ARM_ARCH_7EM__       == 1)) || \
+     (defined (__ARM_ARCH_8M_MAIN__   ) && (__ARM_ARCH_8M_MAIN__   == 1)) || \
+     (defined (__ARM_ARCH_8_1M_MAIN__ ) && (__ARM_ARCH_8_1M_MAIN__ == 1))    )
 
   uint32_t orig = __get_BASEPRI();
 

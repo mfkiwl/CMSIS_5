@@ -9,6 +9,40 @@ from collections import deque
 import os.path
 import csv
 import TestScripts.ParseTrace
+import colorama
+from colorama import init,Fore, Back, Style
+import sys 
+
+resultStatus=0
+
+init()
+
+
+def errorStr(id):
+  if id == 1:
+     return("UNKNOWN_ERROR")
+  if id == 2:
+     return("Equality error")
+  if id == 3:
+     return("Absolute difference error")
+  if id == 4:
+     return("Relative difference error")
+  if id == 5:
+     return("SNR error")
+  if id == 6:
+     return("Different length error")
+  if id == 7:
+     return("Assertion error")
+  if id == 8:
+     return("Memory allocation error")
+  if id == 9:
+     return("Empty pattern error")
+  if id == 10:
+     return("Buffer tail corrupted")
+  if id == 11:
+     return("Close float error")
+
+  return("Unknown error %d" % id)
 
 
 def findItem(root,path):
@@ -57,27 +91,97 @@ class TextFormatter:
            if elem.kind == TestScripts.Parser.TreeElem.GROUP:
               kind = "Group"
            #print(elem.path)
-           print("%s%s : %s (%d)" % (ident,kind,message,theId))
+           print(Style.BRIGHT + ("%s%s : %s (%d)" % (ident,kind,message,theId)) + Style.RESET_ALL)
 
-      def printTest(self,elem, theId, theError,theLine,passed,cycles,params):
+      def printTest(self,elem, theId, theError,errorDetail,theLine,passed,cycles,params):
           message=elem.data["message"]
+          func=elem.data["class"]
           if not elem.data["deprecated"]:
              kind = "Test"
              ident = " " * elem.ident
-             p="FAILED"
+             p=Fore.RED + "FAILED" + Style.RESET_ALL
              if passed == 1:
-                p="PASSED"
-             print("%s%s (%d) : %s (cycles = %d)" % (ident,message,theId,p,cycles))
+                p= Fore.GREEN + "PASSED" + Style.RESET_ALL
+             print("%s%s %s(%s - %d)%s : %s (cycles = %d)" % (ident,message,Style.BRIGHT,func,theId,Style.RESET_ALL,p,cycles))
              if params:
                 print("%s %s" % (ident,params))
              if passed != 1:
-                print("%s Error = %d at line %d" % (ident, theError, theLine))
+                print(Fore.RED + ("%s %s at line %d" % (ident, errorStr(theError), theLine)) + Style.RESET_ALL)
+                if (len(errorDetail)>0):
+                   print(Fore.RED + ident + " " + errorDetail + Style.RESET_ALL)
 
       def pop(self):
           None
 
       def end(self):
         None
+
+# Return test result as a text tree
+class HTMLFormatter:
+      def __init__(self):
+        self.nb=1
+        self.suite=False
+
+      def start(self):
+          print("<html><head><title>Test Results</title></head><body>") 
+
+      def printGroup(self,elem,theId):
+        if elem is None:
+           elem = root
+        message=elem.data["message"]
+        if not elem.data["deprecated"]:
+           kind = "Suite"
+           ident = " " * elem.ident
+           if elem.kind == TestScripts.Parser.TreeElem.GROUP:
+              kind = "Group"
+           if kind == "Group":
+              print("<h%d> %s (%d) </h%d>" % (self.nb,message,theId,self.nb)) 
+           else:
+              print("<h%d> %s (%d) </h%d>" % (self.nb,message,theId,self.nb)) 
+              self.suite=True
+              print("<table style=\"width:100%\">")
+              print("<tr>")
+              print("<td>Name</td>")
+              print("<td>ID</td>")
+              print("<td>Status</td>")
+              print("<td>Params</td>")
+              print("<td>Cycles</td>")
+              print("</tr>")
+           self.nb = self.nb + 1
+
+      def printTest(self,elem, theId, theError,errorDetail,theLine,passed,cycles,params):
+          message=elem.data["message"]
+          if not elem.data["deprecated"]:
+             kind = "Test"
+             ident = " " * elem.ident
+             p="<font color=\"red\">FAILED</font>"
+             if passed == 1:
+                p= "<font color=\"green\">PASSED</font>"
+             print("<tr>")
+             print("<td><pre>%s</pre></td>" % (message,))
+             print("<td>%d</td>" % theId)
+             print("<td>%s</td>" % p)
+             if params:
+                print("<td>%s</td>\n" % (params))
+             else:
+                print("<td></td>\n")
+             print("<td>%d</td>" % cycles)
+             print("</tr>")
+
+             if passed != 1:
+
+                print("<tr><td colspan=4><font color=\"red\">%s at line %d</font></td></tr>" % (errorStr(theError), theLine))
+                if (len(errorDetail)>0):
+                   print("<tr><td colspan=4><font color=\"red\">" + errorDetail + "</font></td></tr>")
+
+      def pop(self):
+          if self.suite:
+            print("</table>")
+          self.nb = self.nb - 1
+          self.suite=False
+
+      def end(self):
+        print("</body></html>")
 
 # Return test result as a CSV
 class CSVFormatter:
@@ -104,7 +208,7 @@ class CSVFormatter:
            if elem.kind == TestScripts.Parser.TreeElem.GROUP:
               kind = "Group"
 
-      def printTest(self,elem, theId, theError, theLine,passed,cycles,params):
+      def printTest(self,elem, theId, theError, errorDetail,theLine,passed,cycles,params):
           message=elem.data["message"]
           if not elem.data["deprecated"]:
              kind = "Test"
@@ -151,7 +255,7 @@ class MathematicaFormatter:
            #else:
            #   self._toPop.append("")
 
-      def printTest(self,elem, theId, theError,theLine,passed,cycles,params):
+      def printTest(self,elem, theId, theError,errorDetail,theLine,passed,cycles,params):
           message=elem.data["message"]
           if not elem.data["deprecated"]:
              kind = "Test"
@@ -180,6 +284,7 @@ class MathematicaFormatter:
 NORMAL = 1 
 INTEST = 2
 TESTPARAM = 3
+ERRORDESC = 4
 
 def createMissingDir(destPath):
   theDir=os.path.normpath(os.path.dirname(destPath))
@@ -220,13 +325,15 @@ def extractDataFiles(results,outputDir):
 
 def writeBenchmark(elem,benchFile,theId,theError,passed,cycles,params,config):
   if benchFile:
-    name=elem.data["class"] 
-    category= elem.categoryDesc()
+    testname=elem.data["class"] 
+    #category= elem.categoryDesc()
+    name=elem.data["message"] 
+    category=elem.getSuiteMessage()
     old=""
     if "testData" in elem.data:
       if "oldID" in elem.data["testData"]:
          old=elem.data["testData"]["oldID"]
-    benchFile.write("\"%s\",\"%s\",%d,\"%s\",%s,%d,%s\n" % (category,name,theId,old,params,cycles,config))
+    benchFile.write("\"%s\",\"%s\",\"%s\",%d,\"%s\",%s,%d,%s\n" % (category,testname,name,theId,old,params,cycles,config))
 
 def getCyclesFromTrace(trace):
   if not trace:
@@ -235,6 +342,7 @@ def getCyclesFromTrace(trace):
     return(TestScripts.ParseTrace.getCycles(trace))
 
 def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
+    global resultStatus
     calibration = 0
     if trace:
       # First cycle in the trace is the calibration data
@@ -247,13 +355,14 @@ def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
     elem=None
     theId=None
     theError=None
+    errorDetail=""
     theLine=None
     passed=0
     cycles=None
     benchFile = None
     config=""
     if embedded:
-       prefix = ".*S:[ ]"
+       prefix = ".*[S]+:[ ]"
 
     # Parse the result file.
     # NORMAL mode is when we are parsing suite or group.
@@ -312,7 +421,7 @@ def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
                           #print(configList)
                           config = "".join(list(joinit(configList[0],",")))
                           configHeaders = "".join(list(joinit(csvheaders,",")))
-                       benchFile.write("CATEGORY,NAME,ID,OLDID,%s,CYCLES,%s\n" % (header,configHeaders))
+                       benchFile.write("CATEGORY,TESTNAME,NAME,ID,OLDID,%s,CYCLES,%s\n" % (header,configHeaders))
    
                     formatter.printGroup(elem,theId)
       
@@ -372,7 +481,7 @@ def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
                     elem = findItem(root,newPath)
    
                     
-                    state = TESTPARAM
+                    state = ERRORDESC
                else:
                  if re.match(r'^%sp.*$' % prefix,l):
                    if benchFile:
@@ -384,6 +493,15 @@ def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
                     state = INTEST
                  else:
                     state = NORMAL
+           elif state == ERRORDESC:
+                    if len(l) > 0:
+                       if re.match(r'^.*E:.*$',l):
+                          if re.match(r'^.*E:[ ].*$',l):
+                             m = re.match(r'^.*E:[ ](.*)$',l)
+                             errorDetail = m.group(1)
+                          else:
+                             errorDetail = ""
+                          state = TESTPARAM
            else:
              if len(l) > 0:
                 state = INTEST 
@@ -399,7 +517,9 @@ def analyseResult(resultPath,root,results,embedded,benchmark,trace,formatter):
                    params=""
                    writeBenchmark(elem,benchFile,theId,theError,passed,cycles,params,config)
                    # Format the node
-                formatter.printTest(elem,theId,theError,theLine,passed,cycles,params)
+                if not passed:
+                   resultStatus=1
+                formatter.printTest(elem,theId,theError,errorDetail,theLine,passed,cycles,params)
 
              
     formatter.end()          
@@ -411,17 +531,25 @@ def analyze(root,results,args,trace):
 
   if args.c:
      analyseResult(resultPath,root,results,args.e,args.b,trace,CSVFormatter())
+  elif args.html:
+     analyseResult(resultPath,root,results,args.e,args.b,trace,HTMLFormatter())
   elif args.m:
      analyseResult(resultPath,root,results,args.e,args.b,trace,MathematicaFormatter())
   else:
+     print("")
+     print(Fore.RED + "The cycles displayed by this script must not be trusted." + Style.RESET_ALL)
+     print(Fore.RED + "They are just an indication. The timing code has not yet been validated." + Style.RESET_ALL)
+     print("")
+
      analyseResult(resultPath,root,results,args.e,args.b,trace,TextFormatter())
 
 parser = argparse.ArgumentParser(description='Parse test description')
 
-parser.add_argument('-f', nargs='?',type = str, default=None, help="Test description file path")
+parser.add_argument('-f', nargs='?',type = str, default="Output.pickle", help="Test description file path")
 # Where the result file can be found
 parser.add_argument('-r', nargs='?',type = str, default=None, help="Result file path")
 parser.add_argument('-c', action='store_true', help="CSV output")
+parser.add_argument('-html', action='store_true', help="HTML output")
 parser.add_argument('-e', action='store_true', help="Embedded test")
 # -o needed when -e is true to know where to extract the output files
 parser.add_argument('-o', nargs='?',type = str, default="Output", help="Output dir path")
@@ -433,10 +561,13 @@ parser.add_argument('-t', nargs='?',type = str, default=None, help="External tra
 args = parser.parse_args()
 
 
+
+
 if args.f is not None:
-    p = parse.Parser()
+    #p = parse.Parser()
     # Parse the test description file
-    root = p.parse(args.f)
+    #root = p.parse(args.f)
+    root=parse.loadRoot(args.f)
     if args.t:
        with open(args.t,"r") as trace:
          with open(args.r,"r") as results:
@@ -448,6 +579,8 @@ if args.f is not None:
        # In FPGA mode, extract output files from stdout (result file)
        with open(args.r,"r") as results:
           extractDataFiles(results,args.o)
+
+    sys.exit(resultStatus)
     
 else:
     parser.print_help()

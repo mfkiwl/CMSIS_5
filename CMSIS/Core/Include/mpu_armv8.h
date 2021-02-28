@@ -1,11 +1,11 @@
 /******************************************************************************
  * @file     mpu_armv8.h
  * @brief    CMSIS MPU API for Armv8-M and Armv8.1-M MPU
- * @version  V5.1.1
- * @date     09. August 2019
+ * @version  V5.1.2
+ * @date     10. February 2020
  ******************************************************************************/
 /*
- * Copyright (c) 2017-2019 Arm Limited. All rights reserved.
+ * Copyright (c) 2017-2020 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -129,6 +129,7 @@ typedef struct {
 */
 __STATIC_INLINE void ARM_MPU_Enable(uint32_t MPU_Control)
 {
+  __DMB();
   MPU->CTRL = MPU_Control | MPU_CTRL_ENABLE_Msk;
 #ifdef SCB_SHCSR_MEMFAULTENA_Msk
   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
@@ -146,6 +147,8 @@ __STATIC_INLINE void ARM_MPU_Disable(void)
   SCB->SHCSR &= ~SCB_SHCSR_MEMFAULTENA_Msk;
 #endif
   MPU->CTRL  &= ~MPU_CTRL_ENABLE_Msk;
+  __DSB();
+  __ISB();
 }
 
 #ifdef MPU_NS
@@ -154,6 +157,7 @@ __STATIC_INLINE void ARM_MPU_Disable(void)
 */
 __STATIC_INLINE void ARM_MPU_Enable_NS(uint32_t MPU_Control)
 {
+  __DMB();
   MPU_NS->CTRL = MPU_Control | MPU_CTRL_ENABLE_Msk;
 #ifdef SCB_SHCSR_MEMFAULTENA_Msk
   SCB_NS->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
@@ -171,6 +175,8 @@ __STATIC_INLINE void ARM_MPU_Disable_NS(void)
   SCB_NS->SHCSR &= ~SCB_SHCSR_MEMFAULTENA_Msk;
 #endif
   MPU_NS->CTRL  &= ~MPU_CTRL_ENABLE_Msk;
+  __DSB();
+  __ISB();
 }
 #endif
 
@@ -275,7 +281,7 @@ __STATIC_INLINE void ARM_MPU_SetRegion_NS(uint32_t rnr, uint32_t rbar, uint32_t 
 }
 #endif
 
-/** Memcopy with strictly ordered memory access, e.g. for register targets.
+/** Memcpy with strictly ordered memory access, e.g. used by code in ARM_MPU_LoadEx()
 * \param dst Destination data is copied to.
 * \param src Source data is copied from.
 * \param len Amount of data words to be copied.

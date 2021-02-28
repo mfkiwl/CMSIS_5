@@ -9,10 +9,17 @@ function(compilerVersion)
   #MESSAGE( STATUS "CMD_OUTPUT:" ${CVERSION})
 endfunction()
 
-function(compilerSpecificCompileOptions PROJECTNAME)
+function(compilerSpecificCompileOptions PROJECTNAME ROOT)
   get_target_property(DISABLEOPTIM ${PROJECTNAME} DISABLEOPTIMIZATION)
+
+  # Add support for the type __fp16 even if there is no HW
+  # support for it.
+  if (FLOAT16)
+  target_compile_options(${PROJECTNAME} PUBLIC "-mfp16-format=ieee")
+  endif()
+
   if ((OPTIMIZED) AND (NOT DISABLEOPTIM))
-    target_compile_options(${PROJECTNAME} PUBLIC "-O2")
+    target_compile_options(${PROJECTNAME} PUBLIC "-Ofast")
   endif()
   
   if (FASTMATHCOMPUTATIONS)
@@ -28,15 +35,38 @@ function(compilerSpecificCompileOptions PROJECTNAME)
     target_compile_options(${PROJECTNAME} PUBLIC "-mlittle-endian")
   endif()
 
-  if (CORTEXM)
+  if (CORTEXM OR CORTEXR)
     target_compile_options(${PROJECTNAME} PUBLIC "-mthumb")
   endif()
 
+  target_link_options(${PROJECTNAME} PUBLIC "-mcpu=${ARM_CPU}")
+
   # Need to add other gcc config for other cortex-m cores
-  if (ARM_CPU STREQUAL "cortex-m7" )
-     target_compile_options(${PROJECTNAME} PUBLIC "-march=armv7e-m;-mfpu=fpv5-d16")
-     target_link_options(${PROJECTNAME} PUBLIC "-march=armv7e-m;-mfpu=fpv5-d16")
+  if (ARM_CPU STREQUAL "cortex-m55" )
+     target_compile_options(${PROJECTNAME} PUBLIC "-march=armv8.1-m.main+mve.fp+fp.dp")
+     target_compile_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-d16")
+     target_link_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-d16")
   endif()
+
+  if (ARM_CPU STREQUAL "cortex-m33" )
+     target_compile_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-sp-d16")
+     target_link_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-sp-d16")
+  endif()
+
+  if (ARM_CPU STREQUAL "cortex-m7" )
+     target_compile_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-d16")
+     target_link_options(${PROJECTNAME} PUBLIC "-mfpu=fpv5-d16")
+  endif()
+
+  if (ARM_CPU STREQUAL "cortex-m4" )
+     target_compile_options(${PROJECTNAME} PUBLIC "-mfpu=fpv4-sp-d16")
+     target_link_options(${PROJECTNAME} PUBLIC "-mfpu=fpv4-sp-d16")
+  endif()
+
+  #if (ARM_CPU STREQUAL "cortex-m0" )
+  #   target_compile_options(${PROJECTNAME} PUBLIC "")
+  #   target_link_options(${PROJECTNAME} PUBLIC "")
+  #endif()
   
   
   if (ARM_CPU STREQUAL "cortex-a9" )
@@ -55,8 +85,8 @@ function(compilerSpecificCompileOptions PROJECTNAME)
   
   if (ARM_CPU STREQUAL "cortex-a5" )
       if ((NEON OR NEONEXPERIMENTAL))
-        target_compile_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=vfpv3-d16")
-        target_link_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=vfpv3-d16")
+        target_compile_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=neon-vfpv4")
+        target_link_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=neon-vfpv4")
       else()
         target_compile_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=vfpv3-d16")
         target_link_options(${PROJECTNAME} PUBLIC "-march=armv7-a;-mfpu=vfpv3-d16")
@@ -93,7 +123,11 @@ function(preprocessScatter CORE PLATFORMFOLDER SCATTERFILE)
 endfunction()
 
 function(toolchainSpecificLinkForCortexM  PROJECTNAME ROOT CORE PLATFORMFOLDER HASCSTARTUP)
-    target_sources(${PROJECTNAME} PRIVATE  ${PLATFORMFOLDER}/${CORE}/Startup/GCC/startup_${CORE}.S)
+    if (HASCSTARTUP)
+      target_sources(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/Startup/GCC/startup_${CORE}.c)
+    else()
+      target_sources(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/Startup/GCC/startup_${CORE}.S)
+    endif() 
     target_sources(${PROJECTNAME} PRIVATE  ${PLATFORMFOLDER}/${CORE}/Startup/GCC/support.c)
 
     target_include_directories(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/LinkScripts/GCC)
@@ -113,14 +147,32 @@ function(toolchainSpecificLinkForCortexA  PROJECTNAME ROOT CORE PLATFORMFOLDER)
 
     # RTE Components
     target_include_directories(${PROJECTNAME} PRIVATE ${ROOT}/CMSIS/DSP/Testing)
+    target_include_directories(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/LinkScripts/GCC)
 
-    # Using the mem file which is included.
-    # Since meme file in same temp directory, it is found by linker 
-    # when processing the scatter file
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tempLink)
     set(SCATTERFILE ${CMAKE_CURRENT_BINARY_DIR}/tempLink/lnk.ld)
     preprocessScatter(${CORE} ${PLATFORMFOLDER} ${SCATTERFILE})
 
+
+    set_target_properties(${PROJECTNAME} PROPERTIES LINK_DEPENDS "${SCATTERFILE}")
+
+    target_link_options(${PROJECTNAME} PRIVATE "--entry=Reset_Handler;-T${SCATTERFILE}")
+endfunction()
+
+function(toolchainSpecificLinkForCortexR  PROJECTNAME ROOT CORE PLATFORMFOLDER)
+    target_sources(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/Startup/GCC/startup_${CORE}.c)
+    target_sources(${PROJECTNAME} PRIVATE  ${PLATFORMFOLDER}/${CORE}/Startup/GCC/support.c)
+
+    # RTE Components
+    target_include_directories(${PROJECTNAME} PRIVATE ${ROOT}/CMSIS/DSP/Testing)
     target_include_directories(${PROJECTNAME} PRIVATE ${PLATFORMFOLDER}/${CORE}/LinkScripts/GCC)
+
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tempLink)
+    set(SCATTERFILE ${CMAKE_CURRENT_BINARY_DIR}/tempLink/lnk.ld)
+    preprocessScatter(${CORE} ${PLATFORMFOLDER} ${SCATTERFILE})
+
+
+    set_target_properties(${PROJECTNAME} PROPERTIES LINK_DEPENDS "${SCATTERFILE}")
 
     target_link_options(${PROJECTNAME} PRIVATE "--entry=Reset_Handler;-T${SCATTERFILE}")
 endfunction()
@@ -145,6 +197,16 @@ function(compilerSpecificPlatformConfigLibForA PROJECTNAME ROOT)
   endif()
 endfunction()
 
+function(compilerSpecificPlatformConfigLibForR PROJECTNAME ROOT)
+  if (SEMIHOSTING)
+    target_link_options(${PROJECTNAME} PRIVATE "--specs=rdimon.specs")
+    target_compile_options(${PROJECTNAME} PRIVATE "--specs=rdimon.specs")
+  else()
+    target_link_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
+    target_compile_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
+  endif()
+endfunction()
+
 function(compilerSpecificPlatformConfigAppForM PROJECTNAME ROOT)
   if (SEMIHOSTING)
     target_link_options(${PROJECTNAME} PRIVATE "--specs=rdimon.specs")
@@ -153,6 +215,9 @@ function(compilerSpecificPlatformConfigAppForM PROJECTNAME ROOT)
     target_link_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
     target_compile_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
   endif()
+
+  target_link_options(${PROJECTNAME} PUBLIC "-Wl,--gc-sections")
+
 endfunction()
 
 function(compilerSpecificPlatformConfigAppForA PROJECTNAME ROOT)
@@ -163,4 +228,16 @@ function(compilerSpecificPlatformConfigAppForA PROJECTNAME ROOT)
     target_link_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
     target_compile_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
   endif()
+
+endfunction()
+
+function(compilerSpecificPlatformConfigAppForR PROJECTNAME ROOT)
+  if (SEMIHOSTING)
+    target_link_options(${PROJECTNAME} PRIVATE "--specs=rdimon.specs")
+    target_compile_options(${PROJECTNAME} PRIVATE "--specs=rdimon.specs")
+  else()
+    target_link_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
+    target_compile_options(${PROJECTNAME} PRIVATE "--specs=nosys.specs")
+  endif()
+
 endfunction()

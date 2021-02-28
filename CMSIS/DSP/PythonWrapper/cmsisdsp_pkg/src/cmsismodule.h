@@ -75,8 +75,8 @@ arm_fir_instance_q7_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -163,8 +163,8 @@ arm_fir_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -251,8 +251,8 @@ arm_fir_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -339,8 +339,8 @@ arm_fir_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -427,8 +427,8 @@ arm_biquad_casd_df1_inst_q15_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -518,8 +518,8 @@ arm_biquad_casd_df1_inst_q31_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -609,8 +609,8 @@ arm_biquad_casd_df1_inst_f32_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -690,8 +690,8 @@ arm_matrix_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -775,8 +775,8 @@ arm_matrix_instance_f64_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -860,8 +860,8 @@ arm_matrix_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -945,8 +945,8 @@ arm_matrix_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1023,8 +1023,8 @@ arm_pid_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1113,8 +1113,8 @@ arm_pid_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1203,8 +1203,8 @@ arm_pid_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1300,8 +1300,8 @@ arm_linear_interp_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject 
         self->instance->pYData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1388,8 +1388,8 @@ arm_bilinear_interp_instance_f32_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1473,8 +1473,8 @@ arm_bilinear_interp_instance_q31_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1558,8 +1558,8 @@ arm_bilinear_interp_instance_q15_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1643,8 +1643,8 @@ arm_bilinear_interp_instance_q7_new(PyTypeObject *type, PyObject *args, PyObject
         self->instance->pData = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1723,8 +1723,8 @@ arm_cfft_radix2_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1811,8 +1811,8 @@ arm_cfft_radix4_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1899,8 +1899,8 @@ arm_cfft_radix2_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -1987,8 +1987,8 @@ arm_cfft_radix4_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2075,8 +2075,8 @@ arm_cfft_radix2_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2166,8 +2166,8 @@ arm_cfft_radix4_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2257,8 +2257,8 @@ arm_cfft_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2336,8 +2336,8 @@ arm_cfft_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2375,6 +2375,83 @@ static PyMethodDef arm_cfft_instance_q31_methods[] = {
 
 
 MLTYPE(arm_cfft_instance_q31,arm_cfft_instance_q31_new,arm_cfft_instance_q31_dealloc,arm_cfft_instance_q31_init,arm_cfft_instance_q31_methods);
+
+typedef struct {
+    PyObject_HEAD
+    arm_cfft_instance_f64 *instance;
+} ml_arm_cfft_instance_f64Object;
+
+
+static void
+arm_cfft_instance_f64_dealloc(ml_arm_cfft_instance_f64Object* self)
+{
+    //printf("Dealloc called\n");
+    if (self->instance)
+    {
+
+
+       PyMem_Free(self->instance);
+    }
+
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+
+static PyObject *
+arm_cfft_instance_f64_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    ml_arm_cfft_instance_f64Object *self;
+    //printf("New called\n");
+
+    self = (ml_arm_cfft_instance_f64Object *)type->tp_alloc(type, 0);
+    //printf("alloc called\n");
+
+    if (self != NULL) {
+
+        self->instance = PyMem_Malloc(sizeof(arm_cfft_instance_f64));
+
+        self->instance->pTwiddle = NULL;
+        self->instance->pBitRevTable = NULL;
+
+    }
+
+    return (PyObject *)self;
+}
+
+static int
+arm_cfft_instance_f64_init(ml_arm_cfft_instance_f64Object *self, PyObject *args, PyObject *kwds)
+{
+
+    PyObject *pTwiddle=NULL;
+    PyObject *pBitRevTable=NULL;
+    char *kwlist[] = {
+        "fftLen","bitRevLength",NULL
+};
+
+if (PyArg_ParseTupleAndKeywords(args, kwds, "|hh", kwlist,&self->instance->fftLen
+,&self->instance->bitRevLength
+))
+    {
+
+
+    }
+    return 0;
+}
+
+GETFIELD(arm_cfft_instance_f64,fftLen,"h");
+GETFIELD(arm_cfft_instance_f64,bitRevLength,"h");
+
+
+static PyMethodDef arm_cfft_instance_f64_methods[] = {
+
+    {"fftLen", (PyCFunction) Method_arm_cfft_instance_f64_fftLen,METH_NOARGS,"fftLen"},
+    {"bitRevLength", (PyCFunction) Method_arm_cfft_instance_f64_bitRevLength,METH_NOARGS,"bitRevLength"},
+
+    {NULL}  /* Sentinel */
+};
+
+
+MLTYPE(arm_cfft_instance_f64,arm_cfft_instance_f64_new,arm_cfft_instance_f64_dealloc,arm_cfft_instance_f64_init,arm_cfft_instance_f64_methods);
 
 
 typedef struct {
@@ -2415,8 +2492,8 @@ arm_cfft_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pBitRevTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2495,8 +2572,8 @@ arm_rfft_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2582,8 +2659,8 @@ arm_rfft_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2669,8 +2746,8 @@ arm_rfft_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2722,6 +2799,83 @@ MLTYPE(arm_rfft_instance_f32,arm_rfft_instance_f32_new,arm_rfft_instance_f32_dea
 
 typedef struct {
     PyObject_HEAD
+    arm_rfft_fast_instance_f64 *instance;
+} ml_arm_rfft_fast_instance_f64Object;
+
+
+static void
+arm_rfft_fast_instance_f64_dealloc(ml_arm_rfft_fast_instance_f64Object* self)
+{
+    //printf("Dealloc called\n");
+    if (self->instance)
+    {
+
+
+       PyMem_Free(self->instance);
+    }
+
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+
+static PyObject *
+arm_rfft_fast_instance_f64_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    ml_arm_rfft_fast_instance_f64Object *self;
+    //printf("New called\n");
+
+    self = (ml_arm_rfft_fast_instance_f64Object *)type->tp_alloc(type, 0);
+    //printf("alloc called\n");
+
+    if (self != NULL) {
+
+        self->instance = PyMem_Malloc(sizeof(arm_rfft_fast_instance_f64));
+
+        self->instance->pTwiddleRFFT = NULL;
+
+    }
+
+
+    return (PyObject *)self;
+}
+
+static int
+arm_rfft_fast_instance_f64_init(ml_arm_rfft_fast_instance_f64Object *self, PyObject *args, PyObject *kwds)
+{
+
+    PyObject *pTwiddleRFFT=NULL;
+char *kwlist[] = {
+"Sint","fftLenRFFT",NULL
+};
+
+if (PyArg_ParseTupleAndKeywords(args, kwds, "|?h", kwlist,&self->instance->Sint
+,&self->instance->fftLenRFFT
+))
+    {
+
+
+    }
+    return 0;
+}
+
+GETFIELD(arm_rfft_fast_instance_f64,Sint,"?");
+GETFIELD(arm_rfft_fast_instance_f64,fftLenRFFT,"h");
+
+
+static PyMethodDef arm_rfft_fast_instance_f64_methods[] = {
+
+    {"Sint", (PyCFunction) Method_arm_rfft_fast_instance_f64_Sint,METH_NOARGS,"Sint"},
+    {"fftLenRFFT", (PyCFunction) Method_arm_rfft_fast_instance_f64_fftLenRFFT,METH_NOARGS,"fftLenRFFT"},
+
+    {NULL}  /* Sentinel */
+};
+
+
+MLTYPE(arm_rfft_fast_instance_f64,arm_rfft_fast_instance_f64_new,arm_rfft_fast_instance_f64_dealloc,arm_rfft_fast_instance_f64_init,arm_rfft_fast_instance_f64_methods);
+
+
+typedef struct {
+    PyObject_HEAD
     arm_rfft_fast_instance_f32 *instance;
 } ml_arm_rfft_fast_instance_f32Object;
 
@@ -2757,8 +2911,8 @@ arm_rfft_fast_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwd
         self->instance->pTwiddleRFFT = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2837,8 +2991,8 @@ arm_dct4_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -2923,8 +3077,8 @@ arm_dct4_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3009,8 +3163,8 @@ arm_dct4_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCfft = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3105,8 +3259,8 @@ arm_fir_decimate_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3196,8 +3350,8 @@ arm_fir_decimate_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3287,8 +3441,8 @@ arm_fir_decimate_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3378,8 +3532,8 @@ arm_fir_interpolate_instance_q15_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3469,8 +3623,8 @@ arm_fir_interpolate_instance_q31_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3560,8 +3714,8 @@ arm_fir_interpolate_instance_f32_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pState = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3651,8 +3805,8 @@ arm_biquad_cas_df1_32x64_ins_q31_new(PyTypeObject *type, PyObject *args, PyObjec
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3742,8 +3896,8 @@ arm_biquad_cascade_df2T_instance_f32_new(PyTypeObject *type, PyObject *args, PyO
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3768,11 +3922,17 @@ if (PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,&self->instance->numSta
 
 GETFIELD(arm_biquad_cascade_df2T_instance_f32,numStages,"i");
 
+static PyObject *                                                             
+Method_arm_biquad_cascade_df2T_instance_f32_state(ml_arm_biquad_cascade_df2T_instance_f32Object *self, PyObject *ignored)
+{                
+    float32_t *state=self->instance->pState;
+    return(NumpyVectorFromf32Buffer(state,self->instance->numStages * 2));                                                  
+} 
 
 static PyMethodDef arm_biquad_cascade_df2T_instance_f32_methods[] = {
 
     {"numStages", (PyCFunction) Method_arm_biquad_cascade_df2T_instance_f32_numStages,METH_NOARGS,"numStages"},
-
+    {"state", (PyCFunction) Method_arm_biquad_cascade_df2T_instance_f32_state,METH_NOARGS,"state"},
     {NULL}  /* Sentinel */
 };
 
@@ -3830,8 +3990,8 @@ arm_biquad_cascade_stereo_df2T_instance_f32_new(PyTypeObject *type, PyObject *ar
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -3918,8 +4078,8 @@ arm_biquad_cascade_df2T_instance_f64_new(PyTypeObject *type, PyObject *args, PyO
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4006,8 +4166,8 @@ arm_fir_lattice_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4094,8 +4254,8 @@ arm_fir_lattice_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4182,8 +4342,8 @@ arm_fir_lattice_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4277,8 +4437,8 @@ arm_iir_lattice_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pvCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4377,8 +4537,8 @@ arm_iir_lattice_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pvCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4477,8 +4637,8 @@ arm_iir_lattice_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *k
         self->instance->pvCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4570,8 +4730,8 @@ arm_lms_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4661,8 +4821,8 @@ arm_lms_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4755,8 +4915,8 @@ arm_lms_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4849,8 +5009,8 @@ arm_lms_norm_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kwds
         self->instance->pCoeffs = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -4948,8 +5108,8 @@ arm_lms_norm_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kwds
         self->instance->recipTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5050,8 +5210,8 @@ arm_lms_norm_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kwds
         self->instance->recipTable = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5158,8 +5318,8 @@ arm_fir_sparse_instance_f32_new(PyTypeObject *type, PyObject *args, PyObject *kw
         self->instance->pTapDelay = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5262,8 +5422,8 @@ arm_fir_sparse_instance_q31_new(PyTypeObject *type, PyObject *args, PyObject *kw
         self->instance->pTapDelay = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5366,8 +5526,8 @@ arm_fir_sparse_instance_q15_new(PyTypeObject *type, PyObject *args, PyObject *kw
         self->instance->pTapDelay = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5470,8 +5630,8 @@ arm_fir_sparse_instance_q7_new(PyTypeObject *type, PyObject *args, PyObject *kwd
         self->instance->pTapDelay = NULL;
 
     }
- 
-   
+
+
     return (PyObject *)self;
 }
 
@@ -5597,7 +5757,7 @@ cmsis_arm_recip_q31(PyObject *obj, PyObject *args)
   {
 
     GETARGUMENT(pRecipTable,NPY_INT32,int32_t,int32_t);
-    
+
     dst=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -5630,7 +5790,7 @@ cmsis_arm_recip_q15(PyObject *obj, PyObject *args)
   {
 
     GETARGUMENT(pRecipTable,NPY_INT16,int16_t,int16_t);
-    
+
     dst=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -5666,7 +5826,7 @@ cmsis_arm_fir_q7(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_q7Object *selfS = (ml_arm_fir_instance_q7Object *)S;
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -5728,7 +5888,7 @@ cmsis_arm_fir_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_q15Object *selfS = (ml_arm_fir_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -5762,7 +5922,7 @@ cmsis_arm_fir_fast_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_q15Object *selfS = (ml_arm_fir_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -5829,7 +5989,7 @@ cmsis_arm_fir_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_q31Object *selfS = (ml_arm_fir_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -5863,7 +6023,7 @@ cmsis_arm_fir_fast_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_q31Object *selfS = (ml_arm_fir_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -5925,7 +6085,7 @@ cmsis_arm_fir_f32(PyObject *obj, PyObject *args)
     ml_arm_fir_instance_f32Object *selfS = (ml_arm_fir_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -5987,7 +6147,7 @@ cmsis_arm_biquad_cascade_df1_q15(PyObject *obj, PyObject *args)
     ml_arm_biquad_casd_df1_inst_q15Object *selfS = (ml_arm_biquad_casd_df1_inst_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -6048,7 +6208,7 @@ cmsis_arm_biquad_cascade_df1_fast_q15(PyObject *obj, PyObject *args)
     ml_arm_biquad_casd_df1_inst_q15Object *selfS = (ml_arm_biquad_casd_df1_inst_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -6082,7 +6242,7 @@ cmsis_arm_biquad_cascade_df1_q31(PyObject *obj, PyObject *args)
     ml_arm_biquad_casd_df1_inst_q31Object *selfS = (ml_arm_biquad_casd_df1_inst_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -6116,7 +6276,7 @@ cmsis_arm_biquad_cascade_df1_fast_q31(PyObject *obj, PyObject *args)
     ml_arm_biquad_casd_df1_inst_q31Object *selfS = (ml_arm_biquad_casd_df1_inst_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -6177,7 +6337,7 @@ cmsis_arm_biquad_cascade_df1_f32(PyObject *obj, PyObject *args)
     ml_arm_biquad_casd_df1_inst_f32Object *selfS = (ml_arm_biquad_casd_df1_inst_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -7054,7 +7214,7 @@ cmsis_arm_mult_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -7090,7 +7250,7 @@ cmsis_arm_mult_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -7126,7 +7286,7 @@ cmsis_arm_mult_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -7162,7 +7322,7 @@ cmsis_arm_mult_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -7537,6 +7697,35 @@ cmsis_arm_cfft_q31(PyObject *obj, PyObject *args)
 }
 
 
+
+static PyObject *
+cmsis_arm_cfft_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+  PyObject *p1=NULL; // input
+  float64_t *p1_converted=NULL; // input
+  uint32_t ifftFlag; // input
+  uint32_t bitReverseFlag; // input
+
+  if (PyArg_ParseTuple(args,"OOii",&S,&p1,&ifftFlag,&bitReverseFlag))
+  {
+
+    ml_arm_cfft_instance_f64Object *selfS = (ml_arm_cfft_instance_f64Object *)S;
+    GETARGUMENT(p1,NPY_DOUBLE,double,float64_t);
+
+    arm_cfft_f64(selfS->instance,p1_converted,(uint8_t)ifftFlag,(uint8_t)bitReverseFlag);
+    FLOATARRAY1(p1OBJ,2*selfS->instance->fftLen,p1_converted);
+
+    PyObject *pythonResult = Py_BuildValue("O",p1OBJ);
+
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
 static PyObject *
 cmsis_arm_cfft_f32(PyObject *obj, PyObject *args)
 {
@@ -7606,7 +7795,7 @@ cmsis_arm_rfft_q15(PyObject *obj, PyObject *args)
 
     ml_arm_rfft_instance_q15Object *selfS = (ml_arm_rfft_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*2*selfS->instance->fftLenReal);
 
 
@@ -7665,7 +7854,7 @@ cmsis_arm_rfft_q31(PyObject *obj, PyObject *args)
 
     ml_arm_rfft_instance_q31Object *selfS = (ml_arm_rfft_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*2*selfS->instance->fftLenReal);
 
 
@@ -7726,12 +7915,12 @@ cmsis_arm_rfft_f32(PyObject *obj, PyObject *args)
 
     ml_arm_rfft_instance_f32Object *selfS = (ml_arm_rfft_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*2*selfS->instance->fftLenReal);
 
 
     arm_rfft_f32(selfS->instance,pSrc_converted,pDst);
- FLOATARRAY1(pDstOBJ,2*selfS->instance->fftLenReal,pDst);
+ FLOATARRAY1(pDstOBJ,selfS->instance->fftLenReal+1,pDst);
 
     PyObject *pythonResult = Py_BuildValue("O",pDstOBJ);
 
@@ -7742,6 +7931,256 @@ cmsis_arm_rfft_f32(PyObject *obj, PyObject *args)
   }
   return(NULL);
 }
+
+static PyObject *
+cmsis_arm_rfft_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+  uint16_t fftLen; // input
+
+  if (PyArg_ParseTuple(args,"Oh",&S,&fftLen))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_fast_init_f64(selfS->instance,fftLen);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+#if 0
+static PyObject *
+cmsis_arm_rfft_32_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_32_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_64_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_64_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_128_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_128_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_256_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_256_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_512_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_512_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_1024_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_1024_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_2048_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_2048_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
+
+static PyObject *
+cmsis_arm_rfft_4096_fast_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+
+  if (PyArg_ParseTuple(args,"O",&S))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+
+    arm_status returnValue = arm_rfft_4096_fast_init_f64(selfS->instance);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+#endif
+
+static PyObject *
+cmsis_arm_rfft_fast_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+  PyObject *p=NULL; // input
+  float64_t *p_converted=NULL; // input
+  float64_t *pOut=NULL; // output
+  uint32_t ifftFlag; // input
+
+  if (PyArg_ParseTuple(args,"OOi",&S,&p,&ifftFlag))
+  {
+
+    ml_arm_rfft_fast_instance_f64Object *selfS = (ml_arm_rfft_fast_instance_f64Object *)S;
+    GETARGUMENT(p,NPY_DOUBLE,double,float64_t);
+
+    pOut=PyMem_Malloc(sizeof(float64_t)*2*selfS->instance->fftLenRFFT);
+
+
+    arm_rfft_fast_f64(selfS->instance,p_converted,pOut,(uint8_t)ifftFlag);
+ FLOATARRAY1(pOutOBJ,2*selfS->instance->fftLenRFFT,pOut);
+
+    PyObject *pythonResult = Py_BuildValue("O",pOutOBJ);
+
+    FREEARGUMENT(p_converted);
+    Py_DECREF(pOutOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
+
 
 
 static PyObject *
@@ -7768,6 +8207,7 @@ cmsis_arm_rfft_fast_init_f32(PyObject *obj, PyObject *args)
   return(NULL);
 }
 
+#if 0
 
 static PyObject *
 cmsis_arm_rfft_32_fast_init_f32(PyObject *obj, PyObject *args)
@@ -7960,6 +8400,7 @@ cmsis_arm_rfft_4096_fast_init_f32(PyObject *obj, PyObject *args)
   return(NULL);
 }
 
+#endif 
 
 static PyObject *
 cmsis_arm_rfft_fast_f32(PyObject *obj, PyObject *args)
@@ -7976,12 +8417,12 @@ cmsis_arm_rfft_fast_f32(PyObject *obj, PyObject *args)
 
     ml_arm_rfft_fast_instance_f32Object *selfS = (ml_arm_rfft_fast_instance_f32Object *)S;
     GETARGUMENT(p,NPY_DOUBLE,double,float32_t);
-    
-    pOut=PyMem_Malloc(sizeof(float32_t)*2*selfS->instance->fftLenRFFT);
+
+    pOut=PyMem_Malloc(sizeof(float32_t)*(selfS->instance->fftLenRFFT));
 
 
     arm_rfft_fast_f32(selfS->instance,p_converted,pOut,(uint8_t)ifftFlag);
- FLOATARRAY1(pOutOBJ,2*selfS->instance->fftLenRFFT,pOut);
+ FLOATARRAY1(pOutOBJ,(selfS->instance->fftLenRFFT),pOut);
 
     PyObject *pythonResult = Py_BuildValue("O",pOutOBJ);
 
@@ -8200,7 +8641,7 @@ cmsis_arm_add_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -8236,7 +8677,7 @@ cmsis_arm_add_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -8272,7 +8713,7 @@ cmsis_arm_add_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -8308,7 +8749,7 @@ cmsis_arm_add_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -8344,7 +8785,7 @@ cmsis_arm_sub_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -8380,7 +8821,7 @@ cmsis_arm_sub_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -8416,7 +8857,7 @@ cmsis_arm_sub_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -8452,7 +8893,7 @@ cmsis_arm_sub_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrcA ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -8486,7 +8927,7 @@ cmsis_arm_scale_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -8520,7 +8961,7 @@ cmsis_arm_scale_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -8554,7 +8995,7 @@ cmsis_arm_scale_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -8588,7 +9029,7 @@ cmsis_arm_scale_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -8620,7 +9061,7 @@ cmsis_arm_abs_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -8652,7 +9093,7 @@ cmsis_arm_abs_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -8684,7 +9125,7 @@ cmsis_arm_abs_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -8716,7 +9157,7 @@ cmsis_arm_abs_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -8751,7 +9192,7 @@ cmsis_arm_dot_prod_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrcA ;
-    
+
     result=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -8787,7 +9228,7 @@ cmsis_arm_dot_prod_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrcA ;
-    
+
     result=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -8823,7 +9264,7 @@ cmsis_arm_dot_prod_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrcA ;
-    
+
     result=PyMem_Malloc(sizeof(q63_t)*1);
 
 
@@ -8859,7 +9300,7 @@ cmsis_arm_dot_prod_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrcA ;
-    
+
     result=PyMem_Malloc(sizeof(q63_t)*1);
 
 
@@ -8893,7 +9334,7 @@ cmsis_arm_shift_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -8926,7 +9367,7 @@ cmsis_arm_shift_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -8959,7 +9400,7 @@ cmsis_arm_shift_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -8992,7 +9433,7 @@ cmsis_arm_offset_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -9025,7 +9466,7 @@ cmsis_arm_offset_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -9058,7 +9499,7 @@ cmsis_arm_offset_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -9091,7 +9532,7 @@ cmsis_arm_offset_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -9123,7 +9564,7 @@ cmsis_arm_negate_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -9155,7 +9596,7 @@ cmsis_arm_negate_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -9187,7 +9628,7 @@ cmsis_arm_negate_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -9219,7 +9660,7 @@ cmsis_arm_negate_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -9251,7 +9692,7 @@ cmsis_arm_copy_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -9283,7 +9724,7 @@ cmsis_arm_copy_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -9315,7 +9756,7 @@ cmsis_arm_copy_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -9347,7 +9788,7 @@ cmsis_arm_copy_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -9383,7 +9824,7 @@ cmsis_arm_conv_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*outputLength);
 
 
@@ -9426,7 +9867,7 @@ cmsis_arm_conv_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9465,7 +9906,7 @@ cmsis_arm_conv_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9502,7 +9943,7 @@ cmsis_arm_conv_fast_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9545,7 +9986,7 @@ cmsis_arm_conv_fast_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9584,7 +10025,7 @@ cmsis_arm_conv_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -9621,7 +10062,7 @@ cmsis_arm_conv_fast_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -9664,7 +10105,7 @@ cmsis_arm_conv_opt_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -9703,7 +10144,7 @@ cmsis_arm_conv_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -9742,7 +10183,7 @@ cmsis_arm_conv_partial_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*outputLength);
 
 
@@ -9789,7 +10230,7 @@ cmsis_arm_conv_partial_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9832,7 +10273,7 @@ cmsis_arm_conv_partial_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9873,7 +10314,7 @@ cmsis_arm_conv_partial_fast_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9920,7 +10361,7 @@ cmsis_arm_conv_partial_fast_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -9963,7 +10404,7 @@ cmsis_arm_conv_partial_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -10004,7 +10445,7 @@ cmsis_arm_conv_partial_fast_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -10051,7 +10492,7 @@ cmsis_arm_conv_partial_opt_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -10094,7 +10535,7 @@ cmsis_arm_conv_partial_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     uint32_t outputLength = srcALen + srcBLen - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -10131,7 +10572,7 @@ cmsis_arm_fir_decimate_f32(PyObject *obj, PyObject *args)
     ml_arm_fir_decimate_instance_f32Object *selfS = (ml_arm_fir_decimate_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -10199,7 +10640,7 @@ cmsis_arm_fir_decimate_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_decimate_instance_q15Object *selfS = (ml_arm_fir_decimate_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -10233,7 +10674,7 @@ cmsis_arm_fir_decimate_fast_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_decimate_instance_q15Object *selfS = (ml_arm_fir_decimate_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -10301,7 +10742,7 @@ cmsis_arm_fir_decimate_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_decimate_instance_q31Object *selfS = (ml_arm_fir_decimate_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -10335,7 +10776,7 @@ cmsis_arm_fir_decimate_fast_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_decimate_instance_q31Object *selfS = (ml_arm_fir_decimate_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -10403,7 +10844,7 @@ cmsis_arm_fir_interpolate_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_interpolate_instance_q15Object *selfS = (ml_arm_fir_interpolate_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -10471,7 +10912,7 @@ cmsis_arm_fir_interpolate_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_interpolate_instance_q31Object *selfS = (ml_arm_fir_interpolate_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -10539,7 +10980,7 @@ cmsis_arm_fir_interpolate_f32(PyObject *obj, PyObject *args)
     ml_arm_fir_interpolate_instance_f32Object *selfS = (ml_arm_fir_interpolate_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -10607,7 +11048,7 @@ cmsis_arm_biquad_cas_df1_32x64_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -10668,7 +11109,7 @@ cmsis_arm_biquad_cascade_df2T_f32(PyObject *obj, PyObject *args)
     ml_arm_biquad_cascade_df2T_instance_f32Object *selfS = (ml_arm_biquad_cascade_df2T_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -10702,7 +11143,7 @@ cmsis_arm_biquad_cascade_stereo_df2T_f32(PyObject *obj, PyObject *args)
     ml_arm_biquad_cascade_stereo_df2T_instance_f32Object *selfS = (ml_arm_biquad_cascade_stereo_df2T_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -10736,7 +11177,7 @@ cmsis_arm_biquad_cascade_df2T_f64(PyObject *obj, PyObject *args)
     ml_arm_biquad_cascade_df2T_instance_f64Object *selfS = (ml_arm_biquad_cascade_df2T_instance_f64Object *)S;
     GETARGUMENT(pSrc,NPY_FLOAT64,float64_t,float64_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float64_t)*blockSize);
 
 
@@ -10874,7 +11315,7 @@ cmsis_arm_fir_lattice_q15(PyObject *obj, PyObject *args)
     ml_arm_fir_lattice_instance_q15Object *selfS = (ml_arm_fir_lattice_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -10934,7 +11375,7 @@ cmsis_arm_fir_lattice_q31(PyObject *obj, PyObject *args)
     ml_arm_fir_lattice_instance_q31Object *selfS = (ml_arm_fir_lattice_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -10994,7 +11435,7 @@ cmsis_arm_fir_lattice_f32(PyObject *obj, PyObject *args)
     ml_arm_fir_lattice_instance_f32Object *selfS = (ml_arm_fir_lattice_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -11028,7 +11469,7 @@ cmsis_arm_iir_lattice_f32(PyObject *obj, PyObject *args)
     ml_arm_iir_lattice_instance_f32Object *selfS = (ml_arm_iir_lattice_instance_f32Object *)S;
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -11093,7 +11534,7 @@ cmsis_arm_iir_lattice_q31(PyObject *obj, PyObject *args)
     ml_arm_iir_lattice_instance_q31Object *selfS = (ml_arm_iir_lattice_instance_q31Object *)S;
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -11158,7 +11599,7 @@ cmsis_arm_iir_lattice_q15(PyObject *obj, PyObject *args)
     ml_arm_iir_lattice_instance_q15Object *selfS = (ml_arm_iir_lattice_instance_q15Object *)S;
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -11231,6 +11672,29 @@ cmsis_arm_cfft_init_f32(PyObject *obj, PyObject *args)
   return(NULL);
 }
 
+static PyObject *
+cmsis_arm_cfft_init_f64(PyObject *obj, PyObject *args)
+{
+
+  PyObject *S=NULL; // input
+  uint16_t fftLen; // input
+
+  if (PyArg_ParseTuple(args,"Oh",&S,&fftLen))
+  {
+
+    ml_arm_cfft_instance_f64Object *selfS = (ml_arm_cfft_instance_f64Object *)S;
+
+    arm_status returnValue = arm_cfft_init_f64(selfS->instance,fftLen);
+    PyObject* theReturnOBJ=Py_BuildValue("i",returnValue);
+
+    PyObject *pythonResult = Py_BuildValue("O",theReturnOBJ);
+
+    Py_DECREF(theReturnOBJ);
+    return(pythonResult);
+
+  }
+  return(NULL);
+}
 
 static PyObject *
 cmsis_arm_cfft_init_q31(PyObject *obj, PyObject *args)
@@ -11304,7 +11768,7 @@ cmsis_arm_lms_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pErr,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -11405,7 +11869,7 @@ cmsis_arm_lms_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pErr,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -11447,7 +11911,7 @@ cmsis_arm_lms_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pErr,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -11519,7 +11983,7 @@ cmsis_arm_lms_norm_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pErr,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -11590,7 +12054,7 @@ cmsis_arm_lms_norm_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pErr,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -11662,7 +12126,7 @@ cmsis_arm_lms_norm_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pRef,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pErr,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pOut=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -11730,7 +12194,7 @@ cmsis_arm_correlate_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*outputLength);
 
 
@@ -11770,7 +12234,7 @@ cmsis_arm_correlate_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -11808,7 +12272,7 @@ cmsis_arm_correlate_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -11845,7 +12309,7 @@ cmsis_arm_correlate_fast_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -11885,7 +12349,7 @@ cmsis_arm_correlate_fast_opt_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*outputLength);
 
 
@@ -11923,7 +12387,7 @@ cmsis_arm_correlate_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -11960,7 +12424,7 @@ cmsis_arm_correlate_fast_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_INT32,int32_t,int32_t);
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*outputLength);
 
 
@@ -12003,7 +12467,7 @@ cmsis_arm_correlate_opt_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pScratch1,NPY_INT16,int16_t,int16_t);
     GETARGUMENT(pScratch2,NPY_INT16,int16_t,int16_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -12042,7 +12506,7 @@ cmsis_arm_correlate_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcA,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(pSrcB,NPY_BYTE,int8_t,q7_t);
     uint32_t outputLength = 2*MAX(srcALen,srcBLen) - 1 ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*outputLength);
 
 
@@ -12080,7 +12544,7 @@ cmsis_arm_fir_sparse_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     GETARGUMENT(pScratchIn,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -12294,7 +12758,7 @@ cmsis_arm_cmplx_conj_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*2*numSamples);
 
 
@@ -12327,7 +12791,7 @@ cmsis_arm_cmplx_conj_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*2*numSamples);
 
 
@@ -12360,7 +12824,7 @@ cmsis_arm_cmplx_conj_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*2*numSamples);
 
 
@@ -12393,7 +12857,7 @@ cmsis_arm_cmplx_mag_squared_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*2*numSamples);
 
 
@@ -12426,7 +12890,7 @@ cmsis_arm_cmplx_mag_squared_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*2*numSamples);
 
 
@@ -12459,7 +12923,7 @@ cmsis_arm_cmplx_mag_squared_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*2*numSamples);
 
 
@@ -12682,7 +13146,7 @@ cmsis_arm_q7_to_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -12768,7 +13232,7 @@ cmsis_arm_q7_to_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -12858,7 +13322,7 @@ cmsis_arm_q7_to_float(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -12948,7 +13412,7 @@ cmsis_arm_q31_to_float(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -13223,7 +13687,7 @@ cmsis_arm_sqrt_f32(PyObject *obj, PyObject *args)
   if (PyArg_ParseTuple(args,"f",&in))
   {
 
-    
+
     pOut=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13252,7 +13716,7 @@ cmsis_arm_sqrt_q31(PyObject *obj, PyObject *args)
   if (PyArg_ParseTuple(args,"i",&in))
   {
 
-    
+
     pOut=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13281,7 +13745,7 @@ cmsis_arm_sqrt_q15(PyObject *obj, PyObject *args)
   if (PyArg_ParseTuple(args,"h",&in))
   {
 
-    
+
     pOut=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -13416,7 +13880,7 @@ cmsis_arm_power_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q63_t)*1);
 
 
@@ -13448,7 +13912,7 @@ cmsis_arm_power_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13480,7 +13944,7 @@ cmsis_arm_power_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q63_t)*1);
 
 
@@ -13512,7 +13976,7 @@ cmsis_arm_power_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13544,7 +14008,7 @@ cmsis_arm_mean_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q7_t)*1);
 
 
@@ -13576,7 +14040,7 @@ cmsis_arm_mean_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -13608,7 +14072,7 @@ cmsis_arm_mean_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13640,7 +14104,7 @@ cmsis_arm_mean_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13672,7 +14136,7 @@ cmsis_arm_var_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13704,7 +14168,7 @@ cmsis_arm_var_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13736,7 +14200,7 @@ cmsis_arm_var_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -13768,7 +14232,7 @@ cmsis_arm_rms_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13800,7 +14264,7 @@ cmsis_arm_rms_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13832,7 +14296,7 @@ cmsis_arm_rms_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -13864,7 +14328,7 @@ cmsis_arm_std_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -13896,7 +14360,7 @@ cmsis_arm_std_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -13928,7 +14392,7 @@ cmsis_arm_std_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
 
@@ -13961,7 +14425,7 @@ cmsis_arm_cmplx_mag_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*2*numSamples);
 
 
@@ -13994,7 +14458,7 @@ cmsis_arm_cmplx_mag_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*2*numSamples);
 
 
@@ -14027,7 +14491,7 @@ cmsis_arm_cmplx_mag_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrc ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*2*numSamples);
 
 
@@ -14064,10 +14528,10 @@ cmsis_arm_cmplx_dot_prod_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     realResult=PyMem_Malloc(sizeof(q31_t)*1);
 
-    
+
     imagResult=PyMem_Malloc(sizeof(q31_t)*1);
 
 
@@ -14107,10 +14571,10 @@ cmsis_arm_cmplx_dot_prod_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     realResult=PyMem_Malloc(sizeof(q63_t)*1);
 
-    
+
     imagResult=PyMem_Malloc(sizeof(q63_t)*1);
 
 
@@ -14150,10 +14614,10 @@ cmsis_arm_cmplx_dot_prod_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     realResult=PyMem_Malloc(sizeof(float32_t)*1);
 
-    
+
     imagResult=PyMem_Malloc(sizeof(float32_t)*1);
 
 
@@ -14192,7 +14656,7 @@ cmsis_arm_cmplx_mult_real_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcReal,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrcCmplx ;
     numSamples = numSamples / 2;
-    
+
     pCmplxDst=PyMem_Malloc(sizeof(q15_t)*2*numSamples);
 
 
@@ -14229,7 +14693,7 @@ cmsis_arm_cmplx_mult_real_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcReal,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrcCmplx ;
     numSamples = numSamples / 2;
-    
+
     pCmplxDst=PyMem_Malloc(sizeof(q31_t)*2*numSamples);
 
 
@@ -14266,7 +14730,7 @@ cmsis_arm_cmplx_mult_real_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcReal,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrcCmplx ;
     numSamples = numSamples / 2;
-    
+
     pCmplxDst=PyMem_Malloc(sizeof(float32_t)*2*numSamples);
 
 
@@ -14302,7 +14766,7 @@ cmsis_arm_min_q7(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     GETARGUMENT(index,NPY_UINT32,uint32_t,uint32_t);
     blockSize = arraySizepSrc ;
-    
+
     result=PyMem_Malloc(sizeof(q7_t)*1);
 
 
@@ -14336,10 +14800,10 @@ cmsis_arm_min_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14374,10 +14838,10 @@ cmsis_arm_min_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14412,10 +14876,10 @@ cmsis_arm_min_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14450,10 +14914,10 @@ cmsis_arm_max_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_BYTE,int8_t,q7_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q7_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14488,10 +14952,10 @@ cmsis_arm_max_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q15_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14526,10 +14990,10 @@ cmsis_arm_max_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(q31_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14564,10 +15028,10 @@ cmsis_arm_max_f32(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pResult=PyMem_Malloc(sizeof(float32_t)*1);
 
-    
+
     pIndex=PyMem_Malloc(sizeof(uint32_t)*1);
 
 
@@ -14605,7 +15069,7 @@ cmsis_arm_cmplx_mult_cmplx_q15(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT16,int16_t,int16_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*2*numSamples);
 
 
@@ -14642,7 +15106,7 @@ cmsis_arm_cmplx_mult_cmplx_q31(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_INT32,int32_t,int32_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*2*numSamples);
 
 
@@ -14679,7 +15143,7 @@ cmsis_arm_cmplx_mult_cmplx_f32(PyObject *obj, PyObject *args)
     GETARGUMENT(pSrcB,NPY_DOUBLE,double,float32_t);
     numSamples = arraySizepSrcA ;
     numSamples = numSamples / 2;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*2*numSamples);
 
 
@@ -14712,7 +15176,7 @@ cmsis_arm_float_to_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -14744,7 +15208,7 @@ cmsis_arm_float_to_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -14776,7 +15240,7 @@ cmsis_arm_float_to_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_DOUBLE,double,float32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -14808,7 +15272,7 @@ cmsis_arm_q31_to_q15(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q15_t)*blockSize);
 
 
@@ -14840,7 +15304,7 @@ cmsis_arm_q31_to_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT32,int32_t,int32_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -14872,7 +15336,7 @@ cmsis_arm_q15_to_float(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(float32_t)*blockSize);
 
 
@@ -14904,7 +15368,7 @@ cmsis_arm_q15_to_q31(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q31_t)*blockSize);
 
 
@@ -14936,7 +15400,7 @@ cmsis_arm_q15_to_q7(PyObject *obj, PyObject *args)
 
     GETARGUMENT(pSrc,NPY_INT16,int16_t,int16_t);
     blockSize = arraySizepSrc ;
-    
+
     pDst=PyMem_Malloc(sizeof(q7_t)*blockSize);
 
 
@@ -15124,6 +15588,7 @@ static PyMethodDef CMSISMLMethods[] = {
 {"arm_cfft_radix4_f32",  cmsis_arm_cfft_radix4_f32, METH_VARARGS,""},
 {"arm_cfft_q15",  cmsis_arm_cfft_q15, METH_VARARGS,""},
 {"arm_cfft_q31",  cmsis_arm_cfft_q31, METH_VARARGS,""},
+{"arm_cfft_f64",  cmsis_arm_cfft_f64, METH_VARARGS,""},
 {"arm_cfft_f32",  cmsis_arm_cfft_f32, METH_VARARGS,""},
 {"arm_rfft_init_q15",  cmsis_arm_rfft_init_q15, METH_VARARGS,""},
 {"arm_rfft_q15",  cmsis_arm_rfft_q15, METH_VARARGS,""},
@@ -15131,15 +15596,9 @@ static PyMethodDef CMSISMLMethods[] = {
 {"arm_rfft_q31",  cmsis_arm_rfft_q31, METH_VARARGS,""},
 {"arm_rfft_init_f32",  cmsis_arm_rfft_init_f32, METH_VARARGS,""},
 {"arm_rfft_f32",  cmsis_arm_rfft_f32, METH_VARARGS,""},
+{"arm_rfft_fast_init_f64",  cmsis_arm_rfft_fast_init_f64, METH_VARARGS,""},
+{"arm_rfft_fast_f32",  cmsis_arm_rfft_fast_f32, METH_VARARGS,""},
 {"arm_rfft_fast_init_f32",  cmsis_arm_rfft_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_32_fast_init_f32",  cmsis_arm_rfft_32_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_64_fast_init_f32",  cmsis_arm_rfft_64_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_128_fast_init_f32",  cmsis_arm_rfft_128_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_256_fast_init_f32",  cmsis_arm_rfft_256_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_512_fast_init_f32",  cmsis_arm_rfft_512_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_1024_fast_init_f32",  cmsis_arm_rfft_1024_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_2048_fast_init_f32",  cmsis_arm_rfft_2048_fast_init_f32, METH_VARARGS,""},
-{"arm_rfft_4096_fast_init_f32",  cmsis_arm_rfft_4096_fast_init_f32, METH_VARARGS,""},
 {"arm_rfft_fast_f32",  cmsis_arm_rfft_fast_f32, METH_VARARGS,""},
 {"arm_dct4_init_f32",  cmsis_arm_dct4_init_f32, METH_VARARGS,""},
 {"arm_dct4_f32",  cmsis_arm_dct4_f32, METH_VARARGS,""},
@@ -15235,6 +15694,7 @@ static PyMethodDef CMSISMLMethods[] = {
 {"arm_iir_lattice_q15",  cmsis_arm_iir_lattice_q15, METH_VARARGS,""},
 {"arm_iir_lattice_init_q15",  cmsis_arm_iir_lattice_init_q15, METH_VARARGS,""},
 {"arm_cfft_init_f32",  cmsis_arm_cfft_init_f32, METH_VARARGS,""},
+{"arm_cfft_init_f64",  cmsis_arm_cfft_init_f64, METH_VARARGS,""},
 {"arm_cfft_init_q31",  cmsis_arm_cfft_init_q31, METH_VARARGS,""},
 {"arm_cfft_init_q15",  cmsis_arm_cfft_init_q15, METH_VARARGS,""},
 {"arm_lms_f32",  cmsis_arm_lms_f32, METH_VARARGS,""},

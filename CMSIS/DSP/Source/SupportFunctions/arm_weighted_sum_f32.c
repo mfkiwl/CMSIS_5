@@ -24,13 +24,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
 #include <limits.h>
 #include <math.h>
 
+#include "dsp/support_functions.h"
 
 /**
- * @addtogroup groupSupport
+ * @addtogroup weightedsum
  * @{
  */
 
@@ -46,6 +46,56 @@
  *
  */
 
+#if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
+
+#include "arm_helium_utils.h"
+
+float32_t arm_weighted_sum_f32(const float32_t *in,const float32_t *weigths, uint32_t blockSize)
+{
+    float32_t       accum1, accum2;
+    f32x4_t         accum1V, accum2V;
+    f32x4_t         inV, wV;
+    const float32_t *pIn, *pW;
+    uint32_t        blkCnt;
+
+
+    pIn = in;
+    pW = weigths;
+
+
+    accum1V = vdupq_n_f32(0.0);
+    accum2V = vdupq_n_f32(0.0);
+
+    blkCnt = blockSize >> 2;
+    while (blkCnt > 0) 
+    {
+        inV = vld1q(pIn);
+        wV = vld1q(pW);
+
+        pIn += 4;
+        pW += 4;
+
+        accum1V = vfmaq(accum1V, inV, wV);
+        accum2V = vaddq(accum2V, wV);
+        blkCnt--;
+    }
+
+    accum1 = vecAddAcrossF32Mve(accum1V);
+    accum2 = vecAddAcrossF32Mve(accum2V);
+
+    blkCnt = blockSize & 3;
+    while(blkCnt > 0)
+    {
+        accum1 += *pIn++ * *pW;
+        accum2 += *pW++;
+        blkCnt--;
+    }
+
+
+    return (accum1 / accum2);
+}
+
+#else
 #if defined(ARM_MATH_NEON)
 
 #include "NEMath.h"
@@ -65,11 +115,11 @@ float32_t arm_weighted_sum_f32(const float32_t *in,const float32_t *weigths, uin
     pIn = in;
     pW = weigths;
 
-    accum1=0.0;
-    accum2=0.0;
+    accum1=0.0f;
+    accum2=0.0f;
 
-    accum1V = vdupq_n_f32(0.0);
-    accum2V = vdupq_n_f32(0.0);
+    accum1V = vdupq_n_f32(0.0f);
+    accum2V = vdupq_n_f32(0.0f);
 
     blkCnt = blockSize >> 2;
     while(blkCnt > 0)
@@ -86,10 +136,10 @@ float32_t arm_weighted_sum_f32(const float32_t *in,const float32_t *weigths, uin
     }
 
     tempV = vpadd_f32(vget_low_f32(accum1V),vget_high_f32(accum1V));
-    accum1 = tempV[0] + tempV[1];
+    accum1 = vget_lane_f32(tempV, 0) + vget_lane_f32(tempV, 1);
 
     tempV = vpadd_f32(vget_low_f32(accum2V),vget_high_f32(accum2V));
-    accum2 = tempV[0] + tempV[1];
+    accum2 = vget_lane_f32(tempV, 0) + vget_lane_f32(tempV, 1);
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
@@ -114,8 +164,8 @@ float32_t arm_weighted_sum_f32(const float32_t *in, const float32_t *weigths, ui
     pIn = in;
     pW = weigths;
 
-    accum1=0.0;
-    accum2=0.0;
+    accum1=0.0f;
+    accum2=0.0f;
 
     blkCnt = blockSize;
     while(blkCnt > 0)
@@ -128,6 +178,8 @@ float32_t arm_weighted_sum_f32(const float32_t *in, const float32_t *weigths, ui
     return(accum1 / accum2);
 }
 #endif
+#endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
+
 /**
- * @} end of groupSupport group
+ * @} end of weightedsum group
  */

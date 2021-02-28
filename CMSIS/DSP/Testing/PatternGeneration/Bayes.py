@@ -39,11 +39,14 @@ NBTRAININGSAMPLES = 30
 # distributed around the centers)
 CENTER_DISTANCE = 1
 
-# Generate a randon points distributed around ome cluster.
+TRAININGRATIO = 6.0
+PREDICTRATIO = 12.0
+
+# Generate random points distributed around one cluster.
 # Cluster are on each axis like (1,0,0,0), (0,1,0,0), (0,0,1,0) etc ...
-def newRandomVector(nbClasses,vecDim):
+def newRandomVector(nbClasses,vecDim,ratio):
         v = np.random.randn(vecDim)
-        v = v * CENTER_DISTANCE/2.0/6.0 
+        v = v * CENTER_DISTANCE/2.0/ratio
         c = np.random.choice(range(0,nbClasses))
         c0 = np.zeros(vecDim)
         c1 = np.copy(c0)
@@ -56,7 +59,7 @@ def trainGaussian(nbClasses,vecDim):
 
         # Generate test patterns for this classifier
         for i in range(0,NBTRAININGSAMPLES):
-            v,c=newRandomVector(nbClasses,vecDim)
+            v,c=newRandomVector(nbClasses,vecDim,TRAININGRATIO)
 
             inputs.append(v)
             outputs.append(c)
@@ -103,7 +106,7 @@ def generateNewTest(config,nb):
     #print(classNb,vecDim)
     for _ in range(0,NBTESTSAMPLES):
         # Generate a test pattern for this classifier
-        v,c=newRandomVector(classNb,vecDim)
+        v,c=newRandomVector(classNb,vecDim,PREDICTRATIO)
         inputs += v
         #print("inputs=",end="")
         #printV(v)
@@ -139,9 +142,64 @@ def generateNewTest(config,nb):
 def writeTests(config):
     generateNewTest(config,1)
 
-PATTERNDIR = os.path.join("Patterns","DSP","Bayes","Bayes")
-PARAMDIR = os.path.join("Parameters","DSP","Bayes","Bayes")
+def writeBenchmark(config):
+    someLists=[VECDIM,BAYESCLASSES]
+    
+    r=np.array([element for element in itertools.product(*someLists)])
+    nbtests=len(VECDIM)*len(BAYESCLASSES)*2
+    config.writeParam(2, r.reshape(nbtests))
 
-configf32=Tools.Config(PATTERNDIR,PARAMDIR,"f32")
+    params=[]
+    inputs=[] 
+    referencepredict=[]
+    dims=[] 
+    nbin=0
+    nbparam=0;
 
-writeTests(configf32)
+    for vecDim, classNb in r:
+        gb = trainGaussian(classNb,vecDim)
+        p = []
+        p += list(np.reshape(gb.theta_,np.size(gb.theta_)))
+        p += list(np.reshape(gb.sigma_,np.size(gb.sigma_)))
+        p += list(np.reshape(gb.class_prior_,np.size(gb.class_prior_)))
+        p.append(gb.epsilon_)
+
+        params += p
+        dims += [nbin,nbparam]
+        nbparam = nbparam + len(p)
+
+        v,c=newRandomVector(classNb,vecDim,PREDICTRATIO)
+        inputs += v
+
+        nbin = nbin + len(v)
+
+        y_pred = gb.predict([v])
+        referencepredict.append(y_pred[0])
+       
+
+    inputs = np.array(inputs)
+    params = np.array(params)
+    referencepredict = np.array(referencepredict)
+    dims = np.array(dims)
+
+    config.writeInput(2, inputs,"Inputs")
+    config.writeReferenceS16(2, referencepredict,"Predicts")
+    config.writeReference(2, params,"Params")
+    config.writeInputS16(2, dims,"DimsBench")
+
+
+def generatePatterns():
+    PATTERNDIR = os.path.join("Patterns","DSP","Bayes","Bayes")
+    PARAMDIR = os.path.join("Parameters","DSP","Bayes","Bayes")
+    
+    configf32=Tools.Config(PATTERNDIR,PARAMDIR,"f32")
+    configf16=Tools.Config(PATTERNDIR,PARAMDIR,"f16")
+    
+    writeTests(configf32)
+    writeTests(configf16)
+
+    writeBenchmark(configf32)
+    writeBenchmark(configf16)
+
+if __name__ == '__main__':
+  generatePatterns()

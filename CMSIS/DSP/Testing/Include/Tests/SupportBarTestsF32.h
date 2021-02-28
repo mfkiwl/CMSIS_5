@@ -1,5 +1,8 @@
 #include "Test.h"
 #include "Pattern.h"
+
+#include "dsp/support_functions.h"
+
 class SupportBarTestsF32:public Client::Suite
     {
         public:
@@ -16,7 +19,6 @@ class SupportBarTestsF32:public Client::Suite
             Client::LocalPattern<float32_t> output;
 
             int nbTests;
-            int nbVecs;
-            int vecDim;
+
 
     };

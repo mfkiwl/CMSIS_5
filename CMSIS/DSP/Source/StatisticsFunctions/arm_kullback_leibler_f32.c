@@ -24,13 +24,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
- * @addtogroup groupStats
+ * @addtogroup Kullback-Leibler
  * @{
  */
 
@@ -50,7 +50,59 @@
  *
  */
 
-#if defined(ARM_MATH_NEON)
+#if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
+
+#include "arm_helium_utils.h"
+#include "arm_vec_math.h"
+
+float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSrcB,uint32_t blockSize)
+{
+    uint32_t blkCnt;
+    float32_t accum, pA,pB;
+ 
+    
+    blkCnt = blockSize;
+
+    accum = 0.0f;
+
+    f32x4_t         vSum = vdupq_n_f32(0.0f);
+    blkCnt = blockSize >> 2;
+    while(blkCnt > 0)
+    {
+        f32x4_t         vecA = vld1q(pSrcA);
+        f32x4_t         vecB = vld1q(pSrcB);
+        f32x4_t         vRatio;
+
+        vRatio = vdiv_f32(vecB, vecA);
+        vSum = vaddq_f32(vSum, vmulq(vecA, vlogq_f32(vRatio)));
+
+        /*
+         * Decrement the blockSize loop counter
+         * Advance vector source and destination pointers
+         */
+        pSrcA += 4;
+        pSrcB += 4;
+        blkCnt --;
+    }
+
+    accum = vecAddAcrossF32Mve(vSum);
+
+    blkCnt = blockSize & 3;
+    while(blkCnt > 0)
+    {
+       pA = *pSrcA++;
+       pB = *pSrcB++;
+       accum += pA * logf(pB / pA);
+       
+       blkCnt--;
+    
+    }
+
+    return(-accum);
+}
+
+#else
+#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "NEMath.h"
 
@@ -67,8 +119,8 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     pInA = pSrcA;
     pInB = pSrcB;
 
-    accum = 0.0;
-    accumV = vdupq_n_f32(0.0);
+    accum = 0.0f;
+    accumV = vdupq_n_f32(0.0f);
 
     blkCnt = blockSize >> 2;
     while(blkCnt > 0)
@@ -90,14 +142,14 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     }
 
     accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-    accum = accumV2[0] + accumV2[1];
+    accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
     {
        pA = *pInA++;
        pB = *pInB++;
-       accum += pA * log(pB/pA);
+       accum += pA * logf(pB/pA);
        
        blkCnt--;
     
@@ -117,13 +169,13 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     pInB = pSrcB;
     blkCnt = blockSize;
 
-    accum = 0.0;
+    accum = 0.0f;
 
     while(blkCnt > 0)
     {
        pA = *pInA++;
        pB = *pInB++;
-       accum += pA * log(pB / pA);
+       accum += pA * logf(pB / pA);
        
        blkCnt--;
     
@@ -132,6 +184,8 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     return(-accum);
 }
 #endif
+#endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
+
 /**
- * @} end of groupStats group
+ * @} end of Kullback-Leibler group
  */

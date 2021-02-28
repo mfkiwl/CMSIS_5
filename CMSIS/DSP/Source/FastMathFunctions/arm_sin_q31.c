@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/fast_math_functions.h"
 #include "arm_common_tables.h"
 
 /**
@@ -53,6 +53,11 @@ q31_t arm_sin_q31(
   int32_t index;                                 /* Index variable */
   q31_t a, b;                                    /* Two nearest output values */
   q31_t fract;                                   /* Temporary values for fractional values */
+
+  if (x < 0)
+  { /* convert negative numbers to corresponding positive ones */
+    x = (uint32_t)x + 0x80000000;
+  }
 
   /* Calculate the nearest index */
   index = (uint32_t)x >> FAST_MATH_Q31_SHIFT;

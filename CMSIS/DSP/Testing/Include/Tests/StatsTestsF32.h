@@ -1,5 +1,8 @@
 #include "Test.h"
 #include "Pattern.h"
+
+#include "dsp/statistics_functions.h"
+
 class StatsTestsF32:public Client::Suite
     {
         public:
@@ -14,13 +17,18 @@ class StatsTestsF32:public Client::Suite
             Client::Pattern<int16_t> dims;
 
             Client::LocalPattern<float32_t> output;
+            Client::LocalPattern<int16_t> index;
             Client::LocalPattern<float32_t> tmp;
 
             // Reference patterns are not loaded when we are in dump mode
             Client::RefPattern<float32_t> ref;
+            Client::Pattern<int16_t> maxIndexes;
+            Client::Pattern<int16_t> minIndexes;
 
             int nbPatterns;
             int vecDim;
+
+            int refOffset;
 
            
 

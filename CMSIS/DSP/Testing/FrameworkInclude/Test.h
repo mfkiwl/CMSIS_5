@@ -30,9 +30,10 @@
 
 #include <cstdlib>
 #include <vector>
-#include <queue>
 #include <cstdio>
-#include "arm_math.h"
+#include "arm_math_types.h"
+#include "arm_math_types_f16.h"
+
 
 // This special value means no limit on the number of samples.
 // It is used when importing patterns and we want to read
@@ -41,6 +42,7 @@
 
 // Pattern files are containing hexadecimal values.
 // So we need to be able to convert some int into float without convertion
+#define TOINT16(v) *((uint16_t*)&v)
 #define TOINT32(v) *((uint32_t*)&v)
 #define TOINT64(v) *((uint64_t*)&v)
 // Or convert some  float into a uint32 or uint64 without convertion
@@ -156,6 +158,17 @@ API of Memory managers used in the test framework
     // when a memory error occured.
     virtual bool HasMemError()=0;
 
+    // When memory manager is supporting tail
+    // then we can check that the tail of the buffer has not been 
+    // corrupted.
+    // The tail being the additional words after the end of the buffer allocated
+    // by the memory manager so that there is some seperation between
+    // successive buffers.
+    // When memory manager is not supporting tail, this function should
+    // always succeed.
+    virtual bool IsTailEmpty(char *, size_t)=0;
+
+
     // Get the memory generation number
     unsigned long generation()
     {
@@ -220,6 +233,12 @@ API of Memory managers used in the test framework
       virtual void DispStatus(Testing::TestStatus,Testing::errorID_t,unsigned long,Testing::cycles_t cycles)=0;
       
 
+      /** Dump additional details for the error
+
+          For instance, for SNR error, it may contain the SNR value.
+      */
+      virtual void DispErrorDetails(const char* )=0;
+
       /** Dump parameters for a test
 
           When a test is run several time with different
@@ -280,6 +299,9 @@ API of Memory managers used in the test framework
       */
       virtual void ImportPattern_f64(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
       virtual void ImportPattern_f32(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+      virtual void ImportPattern_f16(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
+#endif
       virtual void ImportPattern_q63(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
       virtual void ImportPattern_q31(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
       virtual void ImportPattern_q15(Testing::PatternID_t,char*,Testing::nbSamples_t nb=MAX_NB_SAMPLES)=0;
@@ -309,6 +331,9 @@ API of Memory managers used in the test framework
       */
       virtual void DumpPattern_f64(Testing::outputID_t,Testing::nbSamples_t nb, float64_t*)=0;
       virtual void DumpPattern_f32(Testing::outputID_t,Testing::nbSamples_t nb, float32_t*)=0;
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+      virtual void DumpPattern_f16(Testing::outputID_t,Testing::nbSamples_t nb, float16_t*)=0;
+#endif
       virtual void DumpPattern_q63(Testing::outputID_t,Testing::nbSamples_t nb, q63_t*)=0;
       virtual void DumpPattern_q31(Testing::outputID_t,Testing::nbSamples_t nb, q31_t*)=0;
       virtual void DumpPattern_q15(Testing::outputID_t,Testing::nbSamples_t nb, q15_t*)=0;
@@ -388,6 +413,9 @@ public:
     */
     float64_t *load_f64(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
     float32_t *load_f32(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+    float16_t *load_f16(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
+#endif
     q63_t *load_q63(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
     q31_t *load_q31(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
     q15_t *load_q15(Testing::PatternID_t,Testing::nbSamples_t&,Testing::nbSamples_t maxSamples=MAX_NB_SAMPLES);
@@ -405,6 +433,9 @@ public:
     */
     float64_t *local_f64(Testing::nbSamples_t);
     float32_t *local_f32(Testing::nbSamples_t);
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+    float16_t *local_f16(Testing::nbSamples_t);
+#endif
     q63_t *local_q63(Testing::nbSamples_t);
     q31_t *local_q31(Testing::nbSamples_t);
     q15_t *local_q15(Testing::nbSamples_t);
@@ -419,7 +450,10 @@ public:
     */
     void dumpPattern_f64(Testing::outputID_t,Testing::nbSamples_t,float64_t*);
     void dumpPattern_f32(Testing::outputID_t,Testing::nbSamples_t,float32_t*);
-
+#if !defined( __CC_ARM ) && defined(ARM_FLOAT16_SUPPORTED)
+    void dumpPattern_f16(Testing::outputID_t,Testing::nbSamples_t,float16_t*);
+#endif
+    
     void dumpPattern_q63(Testing::outputID_t,Testing::nbSamples_t,q63_t*);
     void dumpPattern_q31(Testing::outputID_t,Testing::nbSamples_t,q31_t*);
     void dumpPattern_q15(Testing::outputID_t,Testing::nbSamples_t,q15_t*);
@@ -466,6 +500,11 @@ public:
     Testing::RunningMode runningMode()
     {
       return(this->m_runningMode);
+    }
+
+    bool IsTailEmpty(char *ptr, size_t length)
+    {
+        return(m_mem->IsTailEmpty(ptr,length));
     }
 
 private:
@@ -530,7 +569,15 @@ private:
          return(v->run(this));
       }
 
+      // Check if, for benchmark, we want to run the code once
+      // before benchmarking it, to force it to be in the I-cache.
+      bool isForcedInCache();
+
+      // Change the status of the forceInCache mode.
+      void setForceInCache(bool);
+
     private:
+        bool m_forcedInCache=false;
         // List of tests
         std::vector<test> m_tests;
         // List of tests IDs (since they are not contiguous
