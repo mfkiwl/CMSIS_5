@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017 ARM Limited. All rights reserved.
+ * Copyright (c) 2013-2021 ARM Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -17,8 +17,8 @@
  *
  * ----------------------------------------------------------------------
  *
- * $Date:        1. December 2017
- * $Revision:    V2.0.0
+ * $Date:        26. May 2021
+ * $Revision:    V2.1.0
  *
  * Project:      CMSIS-DAP Source
  * Title:        DAP.c CMSIS-DAP Commands
@@ -59,9 +59,11 @@ volatile uint8_t    DAP_TransferAbort;  // Transfer Abort Flag
 
 static const char DAP_FW_Ver [] = DAP_FW_VER;
 
-#if TARGET_DEVICE_FIXED
-static const char TargetDeviceVendor [] = TARGET_DEVICE_VENDOR;
-static const char TargetDeviceName   [] = TARGET_DEVICE_NAME;
+#if TARGET_FIXED
+const char TargetDeviceVendor [128] = TARGET_DEVICE_VENDOR;
+const char TargetDeviceName   [128] = TARGET_DEVICE_NAME;
+const char TargetBoardVendor  [128] = TARGET_BOARD_VENDOR;
+const char TargetBoardName    [128] = TARGET_BOARD_NAME;
 #endif
 
 
@@ -82,21 +84,36 @@ static uint8_t DAP_Info(uint8_t id, uint8_t *info) {
     case DAP_ID_SER_NUM:
       length = DAP_GetSerNumString((char *)info);
       break;
-    case DAP_ID_FW_VER:
+    case DAP_ID_DAP_FW_VER:
       length = (uint8_t)sizeof(DAP_FW_Ver);
       memcpy(info, DAP_FW_Ver, length);
       break;
     case DAP_ID_DEVICE_VENDOR:
-#if TARGET_DEVICE_FIXED
-      length = (uint8_t)sizeof(TargetDeviceVendor);
+#if TARGET_FIXED
+      length = (uint8_t)strlen(TargetDeviceVendor);
       memcpy(info, TargetDeviceVendor, length);
 #endif
       break;
     case DAP_ID_DEVICE_NAME:
-#if TARGET_DEVICE_FIXED
-      length = (uint8_t)sizeof(TargetDeviceName);
+#if TARGET_FIXED
+      length = (uint8_t)strlen(TargetDeviceName);
       memcpy(info, TargetDeviceName, length);
 #endif
+      break;
+    case DAP_ID_BOARD_VENDOR:
+#if TARGET_FIXED
+      length = (uint8_t)strlen(TargetBoardVendor);
+      memcpy(info, TargetBoardVendor, length);
+#endif
+      break;
+    case DAP_ID_BOARD_NAME:
+#if TARGET_FIXED
+      length = (uint8_t)strlen(TargetBoardName);
+      memcpy(info, TargetBoardName, length);
+#endif
+      break;
+    case DAP_ID_PRODUCT_FW_VER:
+      length = DAP_GetProductFirmwareVersionString((char *)info);
       break;
     case DAP_ID_CAPABILITIES:
       info[0] = ((DAP_SWD  != 0)         ? (1U << 0) : 0U) |
@@ -105,8 +122,11 @@ static uint8_t DAP_Info(uint8_t id, uint8_t *info) {
                 ((SWO_MANCHESTER != 0)   ? (1U << 3) : 0U) |
                 /* Atomic Commands  */     (1U << 4)       |
                 ((TIMESTAMP_CLOCK != 0U) ? (1U << 5) : 0U) |
-                ((SWO_STREAM != 0U)      ? (1U << 6) : 0U);
-      length = 1U;
+                ((SWO_STREAM != 0U)      ? (1U << 6) : 0U) |
+                ((DAP_UART != 0U)        ? (1U << 7) : 0U);
+
+      info[1] = ((DAP_UART_USB_COM_PORT != 0) ? (1U << 0) : 0U);
+      length = 2U;
       break;
     case DAP_ID_TIMESTAMP_CLOCK:
 #if (TIMESTAMP_CLOCK != 0U) 
@@ -1708,6 +1728,18 @@ uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *response) {
       break;
     case ID_DAP_SWO_Data:
       num = SWO_Data(request, response);
+      break;
+#endif
+
+#if (DAP_UART != 0)
+    case ID_DAP_UART_Transport:
+      num = UART_Transport(request, response);
+      break;
+    case ID_DAP_UART_Configure:
+      num = UART_Configure(request, response);
+      break;
+    case ID_DAP_UART_Transfer:
+      num = UART_Transfer(request, response);
       break;
 #endif
 

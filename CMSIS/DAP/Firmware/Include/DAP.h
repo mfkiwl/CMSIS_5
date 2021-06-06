@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2019 ARM Limited. All rights reserved.
+ * Copyright (c) 2013-2021 ARM Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -17,8 +17,8 @@
  *
  * ----------------------------------------------------------------------
  *
- * $Date:        26. November 2019
- * $Revision:    V2.0.0
+ * $Date:        26. May 2021
+ * $Revision:    V2.1.0
  *
  * Project:      CMSIS-DAP Include
  * Title:        DAP.h Definitions
@@ -31,9 +31,9 @@
 
 // DAP Firmware Version
 #ifdef  DAP_FW_V1
-#define DAP_FW_VER                      "1.2.0"
+#define DAP_FW_VER                      "1.3.0"
 #else
-#define DAP_FW_VER                      "2.0.0"
+#define DAP_FW_VER                      "2.1.0"
 #endif
 
 // DAP Command IDs
@@ -63,6 +63,9 @@
 #define ID_DAP_SWO_Status               0x1BU
 #define ID_DAP_SWO_ExtendedStatus       0x1EU
 #define ID_DAP_SWO_Data                 0x1CU
+#define ID_DAP_UART_Transport           0x1FU
+#define ID_DAP_UART_Configure           0x20U
+#define ID_DAP_UART_Transfer            0x21U
 
 #define ID_DAP_QueueCommands            0x7EU
 #define ID_DAP_ExecuteCommands          0x7FU
@@ -111,9 +114,12 @@
 #define DAP_ID_VENDOR                   1U
 #define DAP_ID_PRODUCT                  2U
 #define DAP_ID_SER_NUM                  3U
-#define DAP_ID_FW_VER                   4U
+#define DAP_ID_DAP_FW_VER               4U
 #define DAP_ID_DEVICE_VENDOR            5U
 #define DAP_ID_DEVICE_NAME              6U
+#define DAP_ID_BOARD_VENDOR             7U
+#define DAP_ID_BOARD_NAME               8U
+#define DAP_ID_PRODUCT_FW_VER           9U
 #define DAP_ID_CAPABILITIES             0xF0U
 #define DAP_ID_TIMESTAMP_CLOCK          0xF1U
 #define DAP_ID_SWO_BUFFER_SIZE          0xFDU
@@ -165,6 +171,16 @@
 #define DAP_SWO_STREAM_ERROR            (1U<<6)
 #define DAP_SWO_BUFFER_OVERRUN          (1U<<7)
 
+// DAP UART Transport
+#define DAP_UART_TRANSPORT_USB_COM_PORT 0U
+#define DAP_UART_TRANSPORT_DAP_COMMAND  1U
+
+// DAP UART Transfer Response Status
+#define DAP_UART_TRANSFER_TX_BUSY       (1U<<11)
+#define DAP_UART_TRANSFER_TX_DATA_LOST  (1U<<12)
+#define DAP_UART_TRANSFER_RX_DATA_LOST  (1U<<13)
+#define DAP_UART_TRANSFER_FRAMING_ERROR (1U<<14)
+#define DAP_UART_TRANSFER_PARITY_ERROR  (1U<<15)
 
 // Debug Port Register Addresses
 #define DP_IDCODE                       0x00U   // IDCODE Register (SW Read only)
@@ -262,17 +278,23 @@ extern void     SWO_QueueTransfer    (uint8_t *buf, uint32_t num);
 extern void     SWO_AbortTransfer    (void);
 extern void     SWO_TransferComplete (void);
 
-extern uint32_t UART_SWO_Mode     (uint32_t enable);
-extern uint32_t UART_SWO_Baudrate (uint32_t baudrate);
-extern uint32_t UART_SWO_Control  (uint32_t active);
-extern void     UART_SWO_Capture  (uint8_t *buf, uint32_t num);
-extern uint32_t UART_SWO_GetCount (void);
+extern uint32_t SWO_Mode_UART     (uint32_t enable);
+extern uint32_t SWO_Baudrate_UART (uint32_t baudrate);
+extern uint32_t SWO_Control_UART  (uint32_t active);
+extern void     SWO_Capture_UART  (uint8_t *buf, uint32_t num);
+extern uint32_t SWO_GetCount_UART (void);
 
-extern uint32_t Manchester_SWO_Mode     (uint32_t enable);
-extern uint32_t Manchester_SWO_Baudrate (uint32_t baudrate);
-extern uint32_t Manchester_SWO_Control  (uint32_t active);
-extern void     Manchester_SWO_Capture  (uint8_t *buf, uint32_t num);
-extern uint32_t Manchester_SWO_GetCount (void);
+extern uint32_t SWO_Mode_Manchester     (uint32_t enable);
+extern uint32_t SWO_Baudrate_Manchester (uint32_t baudrate);
+extern uint32_t SWO_Control_Manchester  (uint32_t active);
+extern void     SWO_Capture_Manchester  (uint8_t *buf, uint32_t num);
+extern uint32_t SWO_GetCount_Manchester (void);
+
+extern uint32_t UART_Transport (const uint8_t *request, uint8_t *response);
+extern uint32_t UART_Configure (const uint8_t *request, uint8_t *response);
+extern uint32_t UART_Transfer  (const uint8_t *request, uint8_t *response);
+
+extern void     USB_COM_PORT_Activate (uint32_t cmd);
 
 extern uint32_t DAP_ProcessVendorCommand (const uint8_t *request, uint8_t *response);
 extern uint32_t DAP_ProcessCommand       (const uint8_t *request, uint8_t *response);

@@ -174,7 +174,7 @@ def get_model_inst(model):
     if FVP_MODELS[model][1]:
         return f"{FVP_MODELS[model][1]}="
     return ""
-    
+
 
 @matrix_filter
 def filter_ac5_armv8m(config):

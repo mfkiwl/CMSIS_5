@@ -135,7 +135,7 @@
   
 -->
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.6.3">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.7.2">
 
   <!-- NonNegativeInteger specifies the format in which numbers are represented in hexadecimal or decimal format -->
   <xs:simpleType name="NonNegativeInteger">
@@ -163,6 +163,7 @@
       <xs:enumeration value="ArteryTek:143" />
       <xs:enumeration value="Atmel:3" />
       <xs:enumeration value="AutoChips:150" />
+      <xs:enumeration value="BrainChip:168" />
       <xs:enumeration value="Cmsemicon:161" />
       <xs:enumeration value="CSR:118" />
       <xs:enumeration value="Cypress:19" />
@@ -174,7 +175,7 @@
       <xs:enumeration value="Ember:98" />
       <xs:enumeration value="Energy Micro:97" />
       <xs:enumeration value="EnOcean:91" />
-      <xs:enumeration value="e-peas semiconductors:167" />
+      <xs:enumeration value="e-peas:167" />
       <xs:enumeration value="EtaCompute:157" />
       <xs:enumeration value="Evatronix:64" />
       <xs:enumeration value="Geehy:163" />

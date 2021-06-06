@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017 ARM Limited. All rights reserved.
+ * Copyright (c) 2013-2021 ARM Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -17,8 +17,8 @@
  *
  * ----------------------------------------------------------------------
  *
- * $Date:        1. December 2017
- * $Revision:    V2.0.0
+ * $Date:        26. May 2021
+ * $Revision:    V2.1.0
  *
  * Project:      CMSIS-DAP Configuration
  * Title:        DAP_config.h CMSIS-DAP Configuration File (Template)
@@ -100,6 +100,9 @@ This information includes:
 /// This information is returned by the command \ref DAP_Info as part of <b>Capabilities</b>.
 #define SWO_UART                1               ///< SWO UART:  1 = available, 0 = not available.
 
+/// USART Driver instance number for the UART SWO.
+#define SWO_UART_DRIVER         0               ///< USART Driver instance number (Driver_USART#).
+
 /// Maximum SWO UART Baudrate.
 #define SWO_UART_MAX_BAUDRATE   10000000U       ///< SWO UART Maximum Baudrate in Hz.
 
@@ -116,15 +119,28 @@ This information includes:
 /// Clock frequency of the Test Domain Timer. Timer value is returned with \ref TIMESTAMP_GET.
 #define TIMESTAMP_CLOCK         100000000U      ///< Timestamp clock in Hz (0 = timestamps not supported).
 
+/// Indicate that UART Communication Port is available.
+/// This information is returned by the command \ref DAP_Info as part of <b>Capabilities</b>.
+#define DAP_UART                1               ///< DAP UART:  1 = available, 0 = not available.
+
+/// USART Driver instance number for the UART Communication Port.
+#define DAP_UART_DRIVER         1               ///< USART Driver instance number (Driver_USART#).
+
+/// Indicate that UART Communication via USB COM Port is available.
+/// This information is returned by the command \ref DAP_Info as part of <b>Capabilities</b>.
+#define DAP_UART_USB_COM_PORT   1               ///< USB COM Port:  1 = available, 0 = not available.
+
 /// Debug Unit is connected to fixed Target Device.
 /// The Debug Unit may be part of an evaluation board and always connected to a fixed
-/// known device.  In this case a Device Vendor and Device Name string is stored which
-/// may be used by the debugger or IDE to configure device parameters.
-#define TARGET_DEVICE_FIXED     0               ///< Target Device: 1 = known, 0 = unknown;
+/// known device. In this case a Device Vendor, Device Name, Board Vendor and Board Name strings
+/// are stored and may be used by the debugger or IDE to configure device parameters.
+#define TARGET_FIXED            0               ///< Target: 1 = known, 0 = unknown;
 
-#if TARGET_DEVICE_FIXED
-#define TARGET_DEVICE_VENDOR    "ARM"           ///< String indicating the Silicon Vendor
+#if TARGET_FIXED
+#define TARGET_DEVICE_VENDOR    "Arm"           ///< String indicating the Silicon Vendor
 #define TARGET_DEVICE_NAME      "Cortex-M4"     ///< String indicating the Target Device
+#define TARGET_BOARD_VENDOR     "Arm"           ///< String indicating the Board Vendor
+#define TARGET_BOARD_NAME       "Arm board"     ///< String indicating the Board Name
 #endif
 
 /** Get Vendor ID string.
@@ -150,6 +166,15 @@ __STATIC_INLINE uint8_t DAP_GetProductString (char *str) {
 \return String length.
 */
 __STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
+  (void)str;
+  return (0U);
+}
+
+/** Get Product Firmware Version string.
+\param str Pointer to buffer to store the string.
+\return String length.
+*/
+__STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString (char *str) {
   (void)str;
   return (0U);
 }

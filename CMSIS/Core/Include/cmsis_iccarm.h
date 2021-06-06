@@ -1,14 +1,14 @@
 /**************************************************************************//**
  * @file     cmsis_iccarm.h
  * @brief    CMSIS compiler ICCARM (IAR Compiler for Arm) header file
- * @version  V5.2.0
- * @date     28. January 2020
+ * @version  V5.3.0
+ * @date     14. April 2021
  ******************************************************************************/
 
 //------------------------------------------------------------------------------
 //
-// Copyright (c) 2017-2020 IAR Systems
-// Copyright (c) 2017-2019 Arm Limited. All rights reserved.
+// Copyright (c) 2017-2021 IAR Systems
+// Copyright (c) 2017-2021 Arm Limited. All rights reserved.
 //
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -265,6 +265,24 @@ __packed struct  __iar_u32 { uint32_t v; };
 
 #ifndef __VECTOR_TABLE_ATTRIBUTE
 #define __VECTOR_TABLE_ATTRIBUTE  @".intvec"
+#endif
+
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#ifndef __STACK_SEAL
+#define __STACK_SEAL              STACKSEAL$$Base
+#endif
+
+#ifndef __TZ_STACK_SEAL_SIZE
+#define __TZ_STACK_SEAL_SIZE      8U
+#endif
+
+#ifndef __TZ_STACK_SEAL_VALUE
+#define __TZ_STACK_SEAL_VALUE     0xFEF5EDA5FEF5EDA5ULL
+#endif
+
+__STATIC_FORCEINLINE void __TZ_set_STACKSEAL_S (uint32_t* stackTop) {
+  *((uint64_t *)stackTop) = __TZ_STACK_SEAL_VALUE;
+}
 #endif
 
 #ifndef __ICCARM_INTRINSICS_VERSION__

@@ -4,7 +4,7 @@
 # pip install streamlit
 #
 # How to use
-# streamlit run cmsisconfig.py
+# streamlit run cmsisdspconfig.py
 #
 import streamlit as st
 import textwrap
@@ -20,6 +20,7 @@ HELIUM=False
 
 config={}
 
+# Used in UI
 config["allTables"] = True
 config["allFFTs"] = True
 config["allInterpolations"] = True
@@ -27,6 +28,7 @@ config["MVEI"]=False
 config["MVEF"]=False
 config["NEON"]=False
 config["HELIUM"]=False
+config["HELIUMEXPERIMENTAL"]=False
 config["Float16"]=True
 config["HOST"]=False
 
@@ -42,6 +44,11 @@ config["LMS_NORM_Q31"]=False
 config["LMS_NORM_Q15"]=False
 config["CMPLX_MAG_Q31"]=False
 config["CMPLX_MAG_Q15"]=False
+
+config["CFFT_RADIX2_Q15"]=False
+config["CFFT_RADIX4_Q15"]=False
+config["CFFT_RADIX2_Q31"]=False
+config["CFFT_RADIX4_Q31"]=False
 
 config["BASICMATH"]=True  
 config["COMPLEXMATH"]=True
@@ -63,6 +70,8 @@ config["ROUNDING"]=False
 config["MATRIXCHECK"]=False
 config["AUTOVECTORIZE"] = False
 
+# Used as options in command line
+# in case the UI option is worded differently
 realname={}
 realname["COS_F32"]="ARM_COS_F32"
 realname["COS_Q31"]="ARM_COS_Q31"
@@ -76,6 +85,10 @@ realname["LMS_NORM_Q31"]="ARM_LMS_NORM_Q31"
 realname["LMS_NORM_Q15"]="ARM_LMS_NORM_Q15"
 realname["CMPLX_MAG_Q31"]="ARM_CMPLX_MAG_Q31"
 realname["CMPLX_MAG_Q15"]="ARM_CMPLX_MAG_Q15"
+realname["CFFT_RADIX2_Q15"]="ARM_CFFT_RADIX2_Q15"
+realname["CFFT_RADIX4_Q15"]="ARM_CFFT_RADIX4_Q15"
+realname["CFFT_RADIX2_Q31"]="ARM_CFFT_RADIX2_Q31"
+realname["CFFT_RADIX4_Q31"]="ARM_CFFT_RADIX4_Q31"
 
 defaulton={}
 defaulton["LOOPUNROLL"]=True 
@@ -365,11 +378,22 @@ def interpretCmakeOptions(cmake):
     if test(cmake,"MVEF"):
        r.append("-DARM_MATH_MVEF")
 
+    if test(cmake,"HELIUMEXPERIMENTAL"):
+       r.append("-DARM_MATH_HELIUM_EXPERIMENTAL")
+
     if test(cmake,"HELIUM") or test(cmake,"MVEF") or test(cmake,"MVEI"):
        r.append("-IPrivateInclude")
 
     if test(cmake,"NEON") or test(cmake,"NEONEXPERIMENTAL"):
        r.append("-IComputeLibrary/Include")
+
+    if test(cmake,"ARM_CFFT_RADIX2_Q15") or test(cmake,"ARM_CFFT_RADIX4_Q15"):
+        r.append("-DARM_TABLE_TWIDDLECOEF_Q15_4096")
+        r.append("-DARM_TABLE_BITREV_1024")
+
+    if test(cmake,"ARM_CFFT_RADIX2_Q31") or test(cmake,"ARM_CFFT_RADIX4_Q31"):
+        r.append("-DARM_TABLE_TWIDDLECOEF_Q31_4096")
+        r.append("-DARM_TABLE_BITREV_1024")
 
     return (removeDuplicates(r))
 
@@ -447,6 +471,11 @@ def configMake(config):
            genui(config,"DCT4",DCTSIZE,DCTDATATYPE)
            st.sidebar.markdown("#### RFFT")
            genui(config,"RFFT",RFFTSIZE,RFFTDATATYPE)
+
+           st.sidebar.markdown("#### Radix2 and Radix4 CFFT")
+           st.sidebar.info("Those functions are deprecated")
+           multiselect(config,"Radix",["CFFT_RADIX2_Q15","CFFT_RADIX4_Q15","CFFT_RADIX2_Q31","CFFT_RADIX4_Q31"])
+
            
 
 
@@ -508,6 +537,7 @@ if not forHost:
    check(config,"ROUNDING")
    check(config,"MATRIXCHECK")
    
+   st.sidebar.header('Vector extensions')
    st.sidebar.info("Enable vector code. It is not automatic for Neon. Use of Helium will enable new options to select some interpolation tables.")
    archi=st.sidebar.selectbox("Vector",('None','Helium','Neon'))
    if archi == 'Neon':
@@ -515,6 +545,8 @@ if not forHost:
    if archi == 'Helium':
       multiselect(config,"MVE configuration",["MVEI","MVEF"])
       HELIUM=True
+      st.sidebar.info("When checked some experimental versions will be enabled and may be less performant than scalar version depending on the architecture.")
+      check(config,"HELIUMEXPERIMENTAL")
    if archi != 'None':
        st.sidebar.info("When autovectorization is on, pure C code will be compiled. The version with C intrinsics won't be compiled.")
        check(config,"AUTOVECTORIZE")
